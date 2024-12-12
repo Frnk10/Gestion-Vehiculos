@@ -1,0 +1,59 @@
+<!-- Main content -->
+<div class="col-md-10 ms-sm-auto col-lg-12 px-md-4 mt-4 main-content">
+    <div class="red-header mb-4 titulo">
+        <h2 style="font-weight: bold;">Certificados  De Honorabilidad</h2>
+    </div>
+    <div class="row">
+        {% include "Reporte/modal.html" %}
+        <div class="container generar_certificado">
+            <button type="button" onclick="abrirModalYListarEmpresas()" class="btn btn-danger" >
+                Generar Certificado
+            </button>  
+        </div>
+        <!-- TABLA CERTIFICADOS -->
+        <div class="col-12 mt-3">
+            <table class=" table table-striped table-hover text-center" id="tbl_certificados">
+                <thead class="table-dark">
+                    <tr>
+                        <th>N°</th>
+                        <th>EMPLEADO</th>
+                        <th>DESCRICPIÓN</th>
+                        <th>FECHA EMISIÓN</th>
+                        <th>CERTIFICADO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reporte in reportes %}
+                        <tr>
+                            <td>{{forloop.counter}}</td> <!-- Número de Enumeración -->
+                            <td>{{reporte.fk_empleado.nombres}} {{reporte.fk_empleado.apellidos}}</td>
+                            <td>{{reporte.descripcion}}</td>
+                            <td>{{reporte.fecha_emision}}</td>
+                            <td>
+                                {% if reporte.reporte %}
+                                    <div class="dropdown">
+                                        <button class="btn btn-warning dropdown-toggle btn_pdf" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <div class="pdf_icon_fondo">
+                                                <i class="fas fa-file-pdf pdf_icon"></i>
+                                            </div>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li><a class="dropdown-item" href="{{reporte.reporte.url}}" target="_blank">Ver</a></li>
+                                        <li><a download class="dropdown-item" href="{{reporte.reporte.url}}">Descargar</a></li>
+                                        </ul>
+                                    </div>
+                                {% else %}
+                                    No disponible
+                                {% endif %}                 
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5">No exiten certificados registrados.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

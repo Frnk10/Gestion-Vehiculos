@@ -1,0 +1,32 @@
+/*TITULO CERTIFICADO*/
+.titulo{
+    display:flex;
+    background: #0078FF;
+    color:whitesmoke;
+    height: 50px;
+    align-items: center;
+    justify-content: center;
+}
+
+/*BOTON GENERAR CERTIFICADO*/
+.generar_certificado{
+    display: flex;
+    justify-content: flex-end;
+}
+
+/*BOTON PDF*/
+.btn_pdf{
+    width: 60px;
+}
+
+/*FONDO BOTON PDF*/
+.pdf_icon_fondo {
+    display: inline-block;
+    background-color: white;
+    width: 22px;
+    height: 30px;
+}
+.pdf_icon { /*Modificar color y tamaño de icono*/
+    color: red;
+    font-size: 30px;
+}

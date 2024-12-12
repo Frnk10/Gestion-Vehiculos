@@ -1,0 +1,23 @@
+.menu-container {
+    background-image: url('/static/img/fondo.png'); /* Reemplaza con la ruta de tu imagen */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 10px;
+    padding: 30px 0;
+}
+
+.btn {
+    width: 180px; /* Ancho de los botones */
+    padding: 15px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.btn i {
+    margin-right: 8px; /* Espacio entre el ícono y el texto */
+}
+
+.mt-5 {
+    margin-top: 3rem !important; /* Margen superior debajo del header */
+}

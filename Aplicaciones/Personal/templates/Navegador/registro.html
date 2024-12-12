@@ -1,0 +1,191 @@
+{% extends 'paginaMaestra.html' %}
+{% load static %}
+
+{% block titulo %} 
+    <title>Registro</title>
+{% endblock titulo %}
+
+{% block header2 %}
+    {{block.super}}
+{% endblock header2 %}
+
+{% block body %}
+    <div class="d-flex justify-content-center w-100">
+        <div class="formulario">
+            <br>
+            <h1 class="mb-4 text-center"><b>FORMULARIO DE REGISTRO</b></h1>
+            <div class="d-flex justify-content-center">
+                <form method="post" id="frm_registro">
+                    {% csrf_token %}
+                    <div class="row g-4">
+                        <div class="col-12 col-md-6">
+                            <label for="first_name" class="form-label">
+                                <b>Nombre:</b>
+                            </label>
+                            {% if registro.errors.first_name %}
+                                <div class="input-group">                               
+                                    <span class="input-group-text">
+                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                    </span>
+                                    <input type="text" name="first_name" id="first_name" class="form-control" 
+                                    placeholder="Ingrese su nombre" value="{{registro.data.first_name}}">                                                                                    
+                                </div>
+                                <div class="text-danger small mb-4">
+                                    {% for error in registro.errors.first_name %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="input-group mb-5">                               
+                                    <span class="input-group-text">
+                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                    </span>
+                                    <input type="text" name="first_name" id="first_name" class="form-control" 
+                                    placeholder="Ingrese su nombre" value="{{registro.data.first_name}}">                                                                                    
+                                </div>
+                            {% endif %}
+                            <label for="last_name" class="form-label">
+                                <b>Apellido:</b>
+                            </label>
+                            {% if registro.errors.last_name %}
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                    </span>
+                                    <input type="text" name="last_name" id="last_name" class="form-control" 
+                                    placeholder="Ingrese su apellido" value="{{registro.data.last_name}}">
+                                </div>
+                                <div class="text-danger small mb-4">
+                                    {% for error in registro.errors.last_name %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="input-group mb-5">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                    </span>
+                                    <input type="text" name="last_name" id="last_name" class="form-control" 
+                                    placeholder="Ingrese su apellido" value="{{registro.data.last_name}}">
+                                </div>
+                            {% endif %}
+                            <label for="email" class="form-label">
+                                <b>Correo Electrónico:</b>
+                            </label>
+                            {% if registro.errors.email %}
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                                    </span>
+                                    <input type="text" name="email" id="email" class="form-control" 
+                                    placeholder="ejemplo@ejemplo.com" value="{{registro.data.email}}">
+                                </div>
+                                <div class="text-danger small mb-3">
+                                    {% for error in registro.errors.email %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="input-group mb-4">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                                    </span>
+                                    <input type="text" name="email" id="email" class="form-control" 
+                                    placeholder="ejemplo@ejemplo.com" value="{{registro.data.email}}">
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="username" class="form-label">
+                                <b>Nombre de Usuario:</b>
+                            </label>                           
+                            {% if registro.errors.username %}
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="bi bi-person-circle" aria-hidden="true"></i>
+                                    </span>
+                                    <input type="text" name="username" id="username" class="form-control" 
+                                    placeholder="Ingrese un nombre de usuario" value="{{registro.data.username}}">                           
+                                </div>
+                                <div class="text-danger small mt-1 mb-4">
+                                    {% for error in registro.errors.username %}
+                                        <p class="mb-0">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="input-group mb-5">
+                                    <span class="input-group-text">
+                                        <i class="bi bi-person-circle" aria-hidden="true"></i>
+                                    </span>
+                                    <input type="text" name="username" id="username" class="form-control" 
+                                    placeholder="Ingrese un nombre de usuario" value="{{registro.data.username}}">                           
+                                </div>
+                            {% endif %}
+                            <label for="password1" class="form-label">
+                                <b>Contraseña:</b>
+                            </label>
+                            {% if registro.errors.password1 %}
+                                <div class="input-group password-wrapper">
+                                    <div class="input-password">
+                                        <span class="input-group-text">
+                                            <i class="fa fa-lock" aria-hidden="true"></i>
+                                        </span>
+                                        <input type="password" name="password1" id="password1" class="form-control" 
+                                        placeholder="Ingrese su contraseña" value="{{registro.data.password1}}">
+                                        <i class="fa fa-eye toggle-password" data-target="password1"></i>
+                                    </div>                                
+                                    <div class="text-danger small mb-1">
+                                        {% for error in registro.errors.password1 %}
+                                            <p>{{ error }}</p>
+                                        {% endfor %}
+                                    </div>                                  
+                                </div>
+                            {% else %}
+                                <div class="input-group mb-5 password-wrapper">
+                                    <div class="input-password">
+                                        <span class="input-group-text">
+                                            <i class="fa fa-lock" aria-hidden="true"></i>
+                                        </span>
+                                        <input type="password" name="password1" id="password1" class="form-control" 
+                                        placeholder="Ingrese su contraseña" value="{{registro.data.password1}}">
+                                        <i class="fa fa-eye toggle-password" data-target="password1"></i>
+                                    </div>                                
+                                </div>
+                            {% endif %}
+                            <label for="password2" class="form-label">
+                                <b>Confirmar Contraseña:</b>
+                            </label>
+                            <div class="input-group mb-4 password-wrapper">  
+                                <div class="input-password">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-lock" aria-hidden="true"></i>
+                                    </span>
+                                    <input type="password" name="password2" id="password2" class="form-control" 
+                                    placeholder="Confirme su contraseña" value="{{registro.data.password2}}">
+                                    <i class="fa fa-eye toggle-password" data-target="password2"></i>
+                                </div>
+                                {% if registro.errors.password2 %}
+                                    <div class="text-danger small mb-2">
+                                        {% for error in registro.errors.password2 %}
+                                            <p>{{ error }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}                 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-2">
+                        <button type="submit" class="btn btn-success mb-3" onclick="registrarUsuario();">
+                            <i class="bi bi-person-fill-add" aria-hidden="true"></i> Registrarse
+                        </button>
+                        <button type="reset" class="btn btn-danger mb-3">
+                            <i class="bi bi-trash-fill" aria-hidden="true"></i> Limpiar
+                        </button>
+                    </div>                
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

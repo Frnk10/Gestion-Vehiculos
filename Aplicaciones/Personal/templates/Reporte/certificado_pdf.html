@@ -1,0 +1,186 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Certificado Honorabilidad</title>
+        <!--Importando CSS-->
+        <link rel="stylesheet" href="{% static 'plantilla/css/bootstrap.min.css' %}"/>
+        <style>
+            @page {
+                size: letter;
+                margin: 1cm;
+            }
+            body {
+                padding: 0px 0px;
+                margin-top: 0px;
+                margin-bottom: 0px;
+                margin-left: 55px;
+                margin-right: 15px;
+                font-family: Arial, sans-serif;
+            }
+            .header {
+                width: 100%;
+                margin: 0 auto;
+                position: relative;
+                text-align: right;
+                font-size: 13px;
+                color: black;
+            }
+
+            /*LOGO IMG*/
+            .logo-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 20px;
+            }
+            .logo{
+                width:200px; 
+                height:70px;
+            }
+
+            /*PARRAFOS*/
+            .actividad_economica {
+                text-align: right;
+                font-size: 10px;
+                line-height: 1.4;
+                color: #000;
+            }
+            .actividad_economica p {
+                margin: 0;
+                padding: 0;
+            }
+            .actividad_economica .detalle{
+                margin-right: 20px;
+                text-align: center;
+            }
+
+            /*TITULO*/
+            .title {
+                text-align: center;
+                font-size: 20px;
+                font-weight: bold;
+                margin-top: 40px;
+                margin-bottom: 30px;
+            }
+            .detalle{
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 14px;
+            }
+            /*CONTENIDO*/
+            .contenido {
+                font-size: 16px;
+                text-align: justify;
+                line-height: 1.5;
+            }
+
+            /*FIRMA*/
+            .firma {
+                margin-top: 30px;
+                margin-bottom: 0px;
+            }
+            .firma img{
+                margin-top: 5px;
+                width:130px;
+                height:60px;
+            }
+
+            /*PUNTOS DE ADORNO*/
+            #puntos {
+                margin-top:0px;
+                margin-bottom: 0px;
+                font-size: 25px;
+                color: #606363;
+            }
+
+            /*FOOTER*/
+            .footer-content {
+                display: flex;
+                justify-content: space-between; /* Espacio entre el texto y la imagen */
+                align-items: center; /* Alinea verticalmente al centro */
+                gap: 20px; /* Espacio entre elementos */
+            }
+            .text-content {
+                font-size: 15px;
+                line-height: 1.8;
+                flex: 1; /* El texto ocupa el máximo espacio disponible */
+            }
+
+            /*TELEFONO*/
+            .contactar{
+                padding: 0px;
+                margin-top: 75px;
+                display: flex;
+                justify-content: center;
+                font-family: 'Times New Roman', Times, serif;
+                font-size: 14px;
+                margin-bottom: 0px;
+            }
+            .contactar a:hover{
+                cursor: pointer;
+                background: #FFFFCC;
+            }
+        </style>
+
+    </head>
+    <body>
+        <div class="header">
+            <div class="logo-container">
+                {% if empresas.logo %}         
+                    <img class="logo" src="{{logo_empresas}}" alt="{{empresas.nombre}}">
+                {% else %}
+                    Logo no disponible
+                {% endif %}
+                <div class="actividad_economica">
+                    <p class="detalle">
+                        {{empresas.actividadeconomica}}<br>
+                    </p>
+                    <p style="font-size: 16px;padding-top:30px;">Quito, {{fecha}}</p>
+                </div>
+            </div>
+            <h1 class="title text-center"><u>CERTIFICADO DE HONORABILIDAD</u></h1>
+        </div>
+        <div class="contenido">
+            <p>Yo <b>{{propietarios.apellidos}} {{propietarios.nombres}}</b>, director de tecnologías de <b>{{empresas.nombre}}</b>, con RUC <b>{{empresas.ruc}}</b> a quien corresponda y a petición verbal de la interesada:</p>
+
+            <p style="padding: 12px 0px;"><b>CERTIFICO CONOCER:</b></p>
+
+            <p>A <b>{{empleados.nombres}} {{empleados.apellidos}}</b> con cédula de ciudadanía <b>{{empleados.cedula}}</b> por un lapso de {{empleados.tiempo_conocimiento}} años tiempo en el cual ha demostrado ser una persona respetuosa, seria, responsable, trabajadora y honrada, la cual se ha ganado mi aprecio y consideración.</p>
+
+            <p style="padding: 10px 0px;">Es todo lo que puedo decir en honor a la verdad, facultándole a la interesada el uso del presente certificado como lo creyere conveniente.</p>
+        </div>
+
+        <div class="firma">
+            <p>Atentamente,</p>
+            {% if propietarios.firma %}
+                <img src="{{firmas}}" alt="{{propietarios.nombres}}">
+            {% else %}
+                Firma no disponible
+            {% endif %}
+        </div>
+        <div class="footer">
+            <div class="footer-content">
+                <div class="text-content">
+                    <p id="puntos">.....................................................</p>
+                    <p>
+                        Ing. {{propietarios.nombres}} {{propietarios.apellidos}} Mgtr.<br>
+                        DIRECTOR DE TECNOLOGÍAS<br>
+                        <b>Cédula:</b> {{propietarios.cedula}}<br>
+                        <b>Celular:</b> {{propietarios.telefono}}<br>
+                        <b>Email:</b> {{propietarios.email}}
+                    </p> 
+                </div>
+                {% if empresas.logo %}
+                    <img class="logo" src="{{logo_empresas}}" alt="{{empresas.nombre}}" style="filter: grayscale(100%);">
+                {% else %}
+                    <p>Logo no disponible</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="contactar">
+            <p>Telf.: +593 {{empresas.telefono}} - <a href="#" target="_blank">{{empresas.email}}</a></p>
+        </div>
+    </body>
+</html>

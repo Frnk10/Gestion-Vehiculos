@@ -1,0 +1,29 @@
+{% extends 'paginaMaestra.html' %}
+{% load static %}
+
+{% block titulo %} 
+    <title>Inicio</title> 
+{% endblock titulo %}
+
+{% block header %}
+   {{block.super}}
+{% endblock header %}
+
+{% block body %}
+    <div class="container mt-5 py-4">
+        <div class="contenedor_inicio"></div> <!-- Fondo responsivo -->
+        <div class="row">
+            <div class="col-lg-6 col-md-12 mb-4">
+                <h2 class="font-weight-bold">Certificado de Honorabilidad</h2>
+                <p class="text-justify">El Certificado de Honorabilidad es un documento que acredita la integridad y reputación de una persona o entidad, esencial para establecer confianza en el ámbito laboral y comercial.</p>
+                <p>Este certificado demuestra un historial limpio y es reconocido en diversas actividades profesionales. ¡Descubre cómo obtener el tuyo!</p>
+                <button class="btn btn-info w-100" type="button" data-bs-toggle="modal" data-bs-target="#logeoModal">
+                    Obtener certificado <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <img src="{% static 'img/certificado.png' %}" alt="Certificado" class="img-fluid">
+            </div>
+        </div>
+    </div>
+{% endblock %}

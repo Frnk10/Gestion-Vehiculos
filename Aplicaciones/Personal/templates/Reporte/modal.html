@@ -1,0 +1,42 @@
+<!-- Modal -->
+<div class="modal fade" id="certificadoModal" tabindex="-1" aria-labelledby="certificadoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="certificadoModalLabel">DATOS DEL CERTIFICADO</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="frm_nuevo_certificado">
+                    {% csrf_token %}
+                    <label for="empresa"><b>EMPRESA:</b></label>
+                    <select name="empresa" id="cboEmpresa" class="form-control">
+                        <option value="" disabled selected hidden>Seleccione la empresa</option>
+                    </select>
+                    <br>
+                    <label for="propietario"><b>PROPIETARIO:</b></label>
+                    <select name="propietario" id="cboPropietario" class="form-control">
+                        <option value="" disabled selected hidden></option>
+                    </select>
+                    <br>
+                    <label for="empleado"><b>EMPLEADO:</b></label>
+                    <select name="empleado" id="cboEmpleado" class="form-control">
+                        <option value="" disabled selected hidden></option>
+                        
+                    </select>                    
+                    <br><br>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-primary" onclick="generarCertificado();">
+                            <i class="fas fa-save"></i>
+                            Generar
+                        </button>
+                        <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">
+                            <i class="fas fa-times"></i>
+                            Cancelar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

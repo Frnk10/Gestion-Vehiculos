@@ -1,0 +1,31 @@
+.formulario {
+    background-color: wheat;
+    border-radius: 8px;
+    padding: 2rem;
+    max-width: 900px; /* Ancho máximo */
+    width: 100%; /* 100% del contenedor */
+    height: 100%;
+}
+button i{
+    font-size: 20px;
+}
+
+label{
+    text-transform: uppercase;
+}
+.formulario .form-control{
+    border: 1px #afaeae solid;
+}
+.formulario input::placeholder{
+    color: #aeb3b6;
+}
+
+/*ERRORES*/
+.text-danger{
+    margin-top: 3px;
+}
+.text-danger.small p{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 15px;
+    color: red;
+}

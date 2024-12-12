@@ -1,0 +1,56 @@
+/* Asegura que la tabla ocupe todo el ancho y se vea bien en pantallas pequeñas */
+.table-responsive {
+    width: 100%;
+}
+
+table.dataTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+
+
+/* Asegura que los botones dentro de las celdas tengan suficiente espacio */
+td .btn {
+    margin: 0 2px;
+}
+
+/* Estilo personalizado para mejorar la apariencia general */
+.dataTables_wrapper .dataTables_filter input {
+    width: auto;
+    margin-left: 0.5em;
+}
+
+/* Alinea el buscador de DataTables a la derecha */
+.dataTables_wrapper .dataTables_filter {
+    float: right;  /* Mueve el buscador a la derecha */
+    text-align: right;
+}
+
+/* Ajuste del input del buscador para hacerlo más compacto */
+.dataTables_wrapper .dataTables_filter input {
+    width: auto;  /* Ajusta el ancho del campo de búsqueda */
+    margin-left: 0.5em;
+}
+
+/* Centra el paginador y los botones de control en DataTables */
+.dataTables_wrapper .dataTables_paginate {
+    float: right;
+    text-align: right;
+}
+
+/* Estilo para los botones con iconos */
+.btn-icon {
+    width: 40px;          /* Ajusta el ancho y alto del botón */
+    height: 40px;
+    padding: 0;           /* Sin relleno interno */
+    display: inline-flex; /* Para centrar el contenido (icono) */
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;   /* Bordes ligeramente redondeados */
+}
+
+/* Para mejorar la apariencia de los iconos */
+.btn-icon i {
+    font-size: 18px;     /* Tamaño del icono */
+}

@@ -1,0 +1,26 @@
+/*MODAL LOGEO*/
+.modal-logeo h1{
+    text-align: center;
+    text-transform: capitalize;
+}
+
+/*CAMPO CONTRASEÑA*/
+.password-wrapper {
+    position: relative;
+}
+.input-password{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.input-password input {
+    padding-right: 40px; /* Espacio para el ícono */
+}
+/*Icono ojo*/
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    color: #4d4c4c;
+    font-size: 20px;
+}

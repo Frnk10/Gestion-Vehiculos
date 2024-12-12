@@ -1,0 +1,52 @@
+# Django
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+_pycache_/
+db.sqlite3
+
+
+
+# Environment
+.env
+*.env
+
+# Django migrations
+/migrations/.py
+/migrations/.pyc
+
+# Python
+*.py[cod]
+*.pyo
+*.pyd
+
+# IDEs
+.vscode/
+.idea/
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Django cache
+*.cache
+
+# Heroku
+Procfile
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

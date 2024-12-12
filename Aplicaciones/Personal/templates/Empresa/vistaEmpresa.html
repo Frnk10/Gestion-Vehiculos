@@ -1,0 +1,262 @@
+<div class="container">
+    <h1 class="mt-4">Lista de Empresas</h1>
+    <div class="row">
+        <div class="col-6">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarEmpresa">
+                Agregar Nuevo
+            </button>
+        </div>
+        <div class="col-6"></div>
+    </div>
+    <div class="table-responsive">
+        <table class="table" id="tbl-empresa">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Ruc</th>
+                    <th>Actividad Economica</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Logo</th>
+                    <th>Estado</th>
+                    <th>Propietario</th>
+                    <th>Link</th> <!-- Nueva columna para el link -->
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for empresa in empresas %}
+                <tr>
+                    <td style="width: 200px;">
+                        <p class="text-small small">{{ empresa.nombre }}</p>
+                    </td>
+                    <td style="width: 200px;"><p class="text-small small">{{ empresa.ruc }}</p></td>
+                    <td style="width: 100px;"><p class="text-small small">{{ empresa.actividadeconomica }}</p></td>
+                    <td style="width: 200px;"><p class="text-small small">{{ empresa.direccion }}</p></td>
+                    <td style="width: 100px;"><p class="text-small small">{{ empresa.telefono }}</p></td>
+                    <td style="width: 100px;"><p class="text-small small">{{ empresa.email }}</p></td>
+                    <td>
+                        {% if empresa.logo %}
+                            <img src="{{ empresa.logo.url }}" alt="logo de {{ empresa.nombre }}" style="width: 50px; height: auto;">
+                        {% else %}
+                            No disponible
+                        {% endif %}
+                    </td>
+                    <td><p class="text-small small">{{ empresa.estado }}</p></td>
+                    <td><p class="text-small small">{{ empresa.propietario }}</p></td>
+                    <td><p class="text-small small">{{ empresa.link }}</p></td> <!-- Mostrar el link -->
+                    <td style="width: 50px;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="button" class="btn-sm rounded" onclick="abrirModalVerEmpresa({{empresa.id}});"><i class="fas fa-pen"></i></button>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" class="btn-sm rounded" onclick="eliminarUnaEmpresa({{empresa.id}})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="10">No hay empresas registradas.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal para agregar empresa -->
+<div class="modal fade" id="modalAgregarEmpresa" tabindex="-1" aria-labelledby="modalAgregarEmpresaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAgregarEmpresaLabel">Agregar Empresa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% csrf_token %}
+                <form id="formAgregarEmpresa" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label><strong>NOMBRE:</strong></label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label><strong>RUC:</strong></label>
+                                <input type="text" class="form-control" id="ruc" name="ruc" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label><strong>ACTIVIDAD ECONOMICA:</strong></label>
+                                <input type="text" class="form-control" id="actividadeconomica" name="actividadeconomica" required>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label><strong>DIRECCIÓN:</strong></label>
+                                <textarea class="form-control" id="direccion" name="direccion" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label><strong>TELÉFONO:</strong></label>
+                            <input type="text" class="form-control" id="telefono" name="telefono" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label><strong>EMAIL:</strong></label>
+                            <input type="text" class="form-control" id="email" name="email" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label><strong>ESTADO:</strong></label>
+                                <select class="form-control" id="estado" name="estado">
+                                    <option value="ACTIVO" selected>ACTIVO</option>
+                                    <option value="INACTIVO">INACTIVO</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label><strong>Propietario:</strong></label>
+                                <select class="form-control" id="propietario" name="propietario" required>
+                                    <option value="">Selecciona un propietario</option>
+                                    {% for propietario in propietarios %}
+                                        <option value="{{ propietario.id }}">{{ propietario.nombres }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label><strong>LINK:</strong></label>
+                                <input type="text" class="form-control" id="link" name="link" required>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label><strong>LOGO:</strong></label>
+                                <input type="file" class="form-control" id="logo" name="logo" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <button type="button" class="btn btn-primary" onclick="guardarDatosEmpresa();">Agregar Empresa</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para seleccionar y visualizar empresa -->
+<div class="modal fade" id="modalVerEmpresa" tabindex="-1" aria-labelledby="modalVerEmpresaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalVerEmpresaLabel">Empresa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% csrf_token %}
+                <form id="formEditarEmpresa" enctype="multipart/form-data">
+                    <input type="hidden" id="verId" name="id">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label><strong>NOMBRE:</strong></label>
+                                <input type="text" class="form-control" id="verNombre" name="nombre" required>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label><strong>RUC:</strong></label>
+                                <input type="text" class="form-control" id="verRuc" name="ruc" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label><strong>ACTIVIDAD ECONOMICA:</strong></label>
+                                <input type="text" class="form-control" id="verActividadEconomica" name="actividadeconomica" required>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label><strong>DIRECCIÓN:</strong></label>
+                                <textarea class="form-control" id="verDireccion" name="direccion" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label><strong>TELÉFONO:</strong></label>
+                            <input type="text" class="form-control" id="verTelefono" name="telefono" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label><strong>EMAIL:</strong></label>
+                            <input type="email" class="form-control" id="verEmail" name="email" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label><strong>ESTADO:</strong></label>
+                                <select class="form-control" id="verEstado" name="estado">
+                                    <option value="ACTIVO">ACTIVO</option>
+                                    <option value="INACTIVO">INACTIVO</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label><strong>Propietario:</strong></label>
+                                <select class="form-control" id="verPropietario" name="propietario" required>
+                                    <option value="">Selecciona un propietario</option>
+                                    {% for propietario in propietarios %}
+                                        <option value="{{ propietario.id }}">{{ propietario.nombres }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label><strong>LINK:</strong></label>
+                                <input type="text" class="form-control" id="verLink" name="link" required>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label><strong>LOGO:</strong></label>
+                                <img id="verLogo" src="" alt="Firma del propietario" class="img-thumbnail" style="max-width: 50%;">
+                                <input type="file" class="form-control" id="logoNuevo" name="logoNuevo" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <button type="button" class="btn btn-primary" onclick="guardarDatosEditadosEmpresa();">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+

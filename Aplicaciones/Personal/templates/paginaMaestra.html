@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block titulo %} 
+        <title>Generador de Certificados</title>
+    {% endblock titulo %}
+
+    <!--Importando CSS-->
+    <link rel="stylesheet" href="{% static 'css/PaginaMaestra/paginaMaestra.css' %}">
+    <link rel="stylesheet" href="{% static 'css/VistaNavegador/vistaNavegador.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Empleado/empleado.css' %}">
+    <!-- Reporte -->
+    <link rel="stylesheet" href="{% static 'css/Reporte/reporte.css' %}">
+    <!--CSS MODAL-->
+    <link rel="stylesheet" href="{% static 'css/VistaNavegador/inicio.css' %}">
+    <link rel="stylesheet" href="{% static 'css/VistaNavegador/modalLogeo.css' %}">
+    <!--CSS REGISTRO-->
+    <link rel="stylesheet" href="{% static 'css/VistaNavegador/registro.css' %}">
+
+    <!-- BOOTSTRAP ICONS -->
+    <link rel="stylesheet" href="{% static 'plantilla/bootstrap-icons/font/bootstrap-icons.min.css' %}">
+    <!--Importando jQuery-->
+    <script src="{% static 'plantilla/js/core/jquery-3.7.1.min.js' %}"></script>
+
+    <!-- importando jquery validate -->
+    <script src="{% static 'plantilla/js/plugin/jquery.validate/jquery.validate.min.js'%}"></script>
+
+    <!-- Fonts and icons -->
+    <script src="{% static 'plantilla/js/plugin/webfont/webfont.min.js' %}"></script>
+    <script>
+        WebFont.load({
+            google: { families: ["Public Sans:300,400,500,600,700"] },
+            custom: {
+                families: [
+                    "Font Awesome 5 Solid",
+                    "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands",
+                    "simple-line-icons",
+                ],
+                urls: ["{% static 'plantilla/css/fonts.min.css' %}"],
+            },
+            active: function () {
+                sessionStorage.fonts = true;
+            },
+        });
+    </script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="{% static 'plantilla/css/bootstrap.min.css' %}" />
+
+</head>
+<body>
+
+    <!-- header -->
+    {% block header %}       
+        <!--Cabecera de la pagina-->
+        <header>
+            <div id="logoTipo">
+                <!--Logo DJANGO-->
+                <img src="{% static 'img/fondo.png' %}" alt="logo Django">
+                <h1>Certificado de honorabilidad</h1>
+            </div>
+        </header>
+        <!--BARRA NAVEGACION-->
+        <nav class="nav_principal">
+            <ul>
+                <li>
+                    <a href="{% url 'inicio' %}">Inicio</a>
+                </li>           
+                <li>
+                    <a id="btn_login" type="button" data-bs-toggle="modal" data-bs-target="#logeoModal">Login</a>
+                </li>
+                <li>
+                    <a  href="{% url 'registro' %}" id="btn_login" type="button">
+                        Registrarse
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!--EFECTO 3D-->
+        <div class="barra">
+            <span class="esquina-izquierda"></span>
+            <span class="relleno-barra"></span>
+            <span class="esquina-derecha"></span>
+        </div>
+        <!--MODALES-->
+        {% include "Navegador/modalLogeo.html" %}
+
+    {% endblock header %}
+    
+    <div class="body-content mt-5">
+        {% block body %}
+            
+        {% endblock %}
+    </div>
+
+    <!-- footer -->
+    <footer class="footer mt-auto py-3 bg-dark text-white">
+        <div class="container text-center">
+            <h5>Proyecto realizado por:</h5>
+            <ul class="list-inline">
+                <li class="list-inline-item"><strong>Aimacaña David</strong></li>
+                <li class="list-inline-item"><strong>Guanoluisa Katherine</strong></li>
+                <li class="list-inline-item"><strong>Porras Xavier</strong></li>
+                <li class="list-inline-item"><strong>Quintanilla Narcisa</strong></li>
+            </ul>
+            <p class="mb-0">Orgullosamente hecho con 💻 y ☕</p>
+        </div>
+    </footer>
+
+    <!--JS MODAL-->
+    <script src="{% static 'js/Navegador/modalLogeo.js' %}"></script>
+    <!--JS REGISTRO-->
+    <script src="{% static 'js/Navegador/registro.js' %}"></script>
+    <script src="{% static 'js/Navegador/validacion.js' %}"></script>
+
+    <!-- Bootstrap -->
+    <script src="{% static 'plantilla/js/core/popper.min.js' %}"></script>
+    <script src="{% static 'plantilla/js/core/bootstrap.min.js' %}"></script>
+    
+    <!-- Datatables -->
+    <script src="{% static 'plantilla/js/plugin/datatables/datatables.min.js' %}"></script>
+
+    <!--SWEETALERT-->
+    <script src="{% static 'plantilla/js/plugin/sweetalert/sweetalert.js' %}"></script>
+    
+    <!-- MOSTRAR MENSAJES -->
+    {% if messages %}
+        {% for mensaje in messages %}
+            {% if mensaje.tags == 'success' %}
+                <script>
+                    Swal.fire({
+                    title: "CONFIRMACIÓN",
+                    text: "{{mensaje}}",
+                    icon: "success"
+                    });
+                </script>
+            {% elif mensaje.tags == 'error' %}
+                <script>
+                    Swal.fire({
+                    title: "ERROR",
+                    text: "{{mensaje}}",
+                    icon: "error"
+                    });
+                </script>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</body>
+
+</html>
