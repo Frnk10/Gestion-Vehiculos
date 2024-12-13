@@ -1,81 +1,43 @@
 from django.db import models
 
-# Create your models here.
+class Ciudad(models.Model):
+    nombre_ciu = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.nombre_ciu
+        
 class Propietario(models.Model):
-    ESTADO_CHOICES = [
-        ('ACTIVO', 'ACTIVO'),
-        ('INACTIVO', 'INACTIVO'),
-    ]
-    
-    nombres = models.CharField(max_length=200)
-    apellidos = models.CharField(max_length=200)
-    cedula = models.CharField(max_length=12, unique=True) 
-    telefono = models.CharField(max_length=15)
-    email = models.EmailField(blank=True,null=True) 
-    direccion = models.TextField()
-    foto = models.ImageField(upload_to='fotos_propietarios/', blank=True, null=True)
-    firma= models.ImageField(upload_to='firma_propietarios/',blank=True,null=True)
-    estado = models.CharField(max_length=8, choices=ESTADO_CHOICES, default='ACTIVO')
-    def save(self, *args, **kwargs):
-        # Convertir nombres y apellidos a mayúsculas antes de guardar
-        self.nombres = self.nombres.upper()
-        self.apellidos = self.apellidos.upper()
-        super().save(*args, **kwargs)
+    nombre_pro = models.CharField(max_length=100)
+    apellido_pro = models.CharField(max_length=100)
+    email_pro = models.EmailField()
+    telefono_pro = models.CharField(max_length=15)
+    fkid_ciu = models.ForeignKey(Ciudad, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.nombres} {self.apellidos} ({self.estado})"
-    
-# MODELO EMPRESA
-class Empresa(models.Model):
-    ESTADO_CHOICES = [
-        ('ACTIVO', 'ACTIVO'),
-        ('INACTIVO', 'INACTIVO'),
-    ]
-    nombre = models.CharField(max_length=300)
-    ruc = models.CharField(max_length=13, unique=True) 
-    actividadeconomica = models.CharField(max_length=200)
-    direccion = models.TextField()
-    telefono = models.CharField(max_length=15)  
-    email = models.CharField(max_length=200)
-    logo = models.ImageField(upload_to='logo_empresa/', blank=True, null=True)
-    estado = models.CharField(max_length=8, choices=ESTADO_CHOICES, default='ACTIVO')
-    propietario = models.ForeignKey(Propietario, on_delete=models.CASCADE, related_name="empresa",blank=True,null=True)
-    link =models.CharField(max_length=300,default='1')
+        return f'{self.nombre_pro} {self.apellido_pro}'
 
-    def save(self, *args, **kwargs):
-        self.nombre = self.nombre.upper()
-        super().save(*args, **kwargs)
+
+class Modelo(models.Model):
+    nombre_mod = models.CharField(max_length=100)
+    fabricacion_mod = models.IntegerField()
 
     def __str__(self):
-        return f"{self.nombre}"
-    
-class Empleado(models.Model):    
-    nombres = models.CharField(max_length=200)
-    apellidos = models.CharField(max_length=200)
-    cedula = models.CharField(max_length=12, unique=True) 
-    telefono = models.CharField(max_length=15)  
-    direccion = models.TextField()
-    tiempo_conocimiento = models.IntegerField()
-    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE,blank=True,null=True)
+        return self.nombre_mod
 
-    def save(self, *args, **kwargs):
-        # Convertir nombres y apellidos a mayúsculas antes de guardar
-        self.nombres = self.nombres.upper()
-        self.apellidos = self.apellidos.upper()
-        super().save(*args, **kwargs)
+
+class Carro(models.Model):
+    color_car = models.CharField(max_length=50)
+    precio_car = models.DecimalField(max_digits=10, decimal_places=2)
+    placa_com = models.CharField(max_length=10, unique=True)
+    fkid_mod = models.ForeignKey(Modelo, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.nombres} {self.apellidos} "
+        return f'{self.color_car} - {self.placa_com}'
 
-# MODELO REPORTE
-class Reporte(models.Model):
-    reporte = models.FileField(upload_to='Reportes/',null=True,blank=True)
-    descripcion = models.TextField(null=True)
-    fecha_emision = models.DateField(auto_now_add=True,verbose_name='Fecha creación:')
-    fecha_actualizacion = models.DateTimeField(auto_now=True,verbose_name='Última actualización:')
-    # Clave foranea Empleado
-    fk_empleado = models.ForeignKey(Empleado,verbose_name='Empleado:',on_delete=models.CASCADE)
-    
+
+class Historial(models.Model):
+    fkid_pro = models.ForeignKey(Propietario, on_delete=models.CASCADE)
+    fkid_car = models.ForeignKey(Carro, on_delete=models.CASCADE)
+
     def __str__(self):
-        fila = "Reporte: {0} - {1}"
-        return fila.format(self.fk_empleado.nombres,self.fecha_emision)    
+        return f'Historial de {self.fkid_pro} para el carro {self.fkid_car}'
