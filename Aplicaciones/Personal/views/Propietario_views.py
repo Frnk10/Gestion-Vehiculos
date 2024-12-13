@@ -47,33 +47,28 @@ def cargarPropietarioEditar(request, propietario_id):
 
 def editar_propietario(request, propietario_id):
     if request.method == 'POST':
-        # Obtener los datos del formulario
-        nombre_pro = request.POST.get('nombre_pro')
-        apellido_pro = request.POST.get('apellido_pro')
-        email_pro = request.POST.get('email_pro')
-        telefono_pro = request.POST.get('telefono_pro')
+        # Obtén los datos del formulario
+        nombre = request.POST.get('nombre_pro_editar')
+        apellido = request.POST.get('apellido_pro__editar')
+        email = request.POST.get('email_pro_editar')
+        telefono = request.POST.get('telefono_pro_editar')
         fkid_ciu = request.POST.get('fkid_ciu')
 
-        # Validar que los campos no estén vacíos
-        if not nombre_pro or not apellido_pro or not email_pro or not telefono_pro or not fkid_ciu:
-            return JsonResponse({'message': 'Todos los campos son requeridos', 'status': 'error'}, status=400)
+        # Encuentra el propietario y actualízalo
+        propietario = get_object_or_404(Propietario, id=propietario_id)
+        propietario.nombre = nombre
+        propietario.apellido = apellido
+        propietario.email = email
+        propietario.telefono = telefono
+        propietario.fkid_ciu_id = fkid_ciu  # Asumiendo que fkid_ciu es el ID de la ciudad
 
-        # Buscar al propietario por su ID
-        propietario = get_object_or_404(Propietario, pk=propietario_id)
-
-        # Actualizar los campos del propietario
-        propietario.nombre_pro = nombre_pro
-        propietario.apellido_pro = apellido_pro
-        propietario.email_pro = email_pro
-        propietario.telefono_pro = telefono_pro
-        propietario.fkid_ciu_id = fkid_ciu
-
-        # Guardar los cambios
+        # Guarda los cambios en la base de datos
         propietario.save()
 
-        return JsonResponse({'message': 'Propietario actualizado con éxito', 'status': 'success'})
+        # Devuelve una respuesta JSON de éxito
+        return JsonResponse({'status': 'success', 'message': 'Propietario actualizado exitosamente'})
 
-    return JsonResponse({'message': 'Método no permitido', 'status': 'error'}, status=405)
+    return JsonResponse({'status': 'error', 'message': 'No se pudo actualizar el propietario'})
 
 
 def eliminar_propietario(request, propietario_id):
