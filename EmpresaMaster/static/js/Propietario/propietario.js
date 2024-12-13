@@ -106,8 +106,8 @@ function agregarPropietario() {
     .catch(error => console.error('Error al agregar propietario:', error));
 }
 
-function cargarDatosEditar(propietarioId) {
-    fetch(`../editarPropietario/${propietarioId}/`, {
+function cargarPropietarioEditar(propietarioId) {
+    fetch(`../cargarPropietarioEditar/${propietarioId}/`, {
         method: 'GET',
         headers: {
             'X-CSRFToken': getCookie('csrftoken')
@@ -116,11 +116,12 @@ function cargarDatosEditar(propietarioId) {
     .then(response => response.json())
     .then(data => {
         if (data.status === 'success') {
-            document.getElementById('nombre_pro').value = data.nombre_pro;
-            document.getElementById('apellido_pro').value = data.apellido_pro;
-            document.getElementById('email_pro').value = data.email_pro;
-            document.getElementById('telefono_pro').value = data.telefono_pro;
-            document.getElementById('fkid_ciu').value = data.fkid_ciu;
+            document.getElementById('nombre_pro_editar').value = data.nombre_pro;
+            document.getElementById('apellido_pro_editar').value = data.apellido_pro;
+            document.getElementById('email_pro_editar').value = data.email_pro;
+            document.getElementById('telefono_pro_editar').value = data.telefono_pro;
+            document.getElementById('fkid_ciu_editar').value = data.fkid_ciu;
         }
-    });
+    })
+    .catch(error => console.error('Error al cargar datos para editar:', error));
 }

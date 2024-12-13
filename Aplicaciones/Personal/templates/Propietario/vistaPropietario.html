@@ -84,7 +84,7 @@
                     <td>{{ propietario.telefono_pro }}</td>
                     <td>{{ propietario.fkid_ciu.nombre_ciu }}</td>
                     <td class="text-center">
-                        <button onclick="cargarDatosEditar(propietarioId)" data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-primary btn-sm mx-1"><i class="fas fa-pen"></i></button>
+                        <button onclick="cargarPropietarioEditar({{ propietario.id }})" data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-primary btn-sm mx-1"><i class="fas fa-pen"></i></button>
                         <button onclick="eliminarPropietario({{ propietario.id }})" class="btn btn-danger btn-sm mx-1"><i class="fas fa-trash"></i></button>
                     </td>
                 </tr>
@@ -110,24 +110,24 @@
             <div class="modal-body">
                 <form id="editar-form">
                     <div class="mb-3">
-                        <label for="nombre_pro" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="nombre_pro" name="nombre_pro">
+                        <label for="nombre_pro_editar" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombre_pro_editar" name="nombre_pro">
                     </div>
                     <div class="mb-3">
-                        <label for="apellido_pro" class="form-label">Apellido</label>
-                        <input type="text" class="form-control" id="apellido_pro" name="apellido_pro">
+                        <label for="apellido_pro_editar" class="form-label">Apellido</label>
+                        <input type="text" class="form-control" id="apellido_pro_editar" name="apellido_pro">
                     </div>
                     <div class="mb-3">
-                        <label for="email_pro" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email_pro" name="email_pro">
+                        <label for="email_pro_editar" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email_pro_editar" name="email_pro">
                     </div>
                     <div class="mb-3">
-                        <label for="telefono_pro" class="form-label">Teléfono</label>
-                        <input type="text" class="form-control" id="telefono_pro" name="telefono_pro">
+                        <label for="telefono_pro_editar" class="form-label">Teléfono</label>
+                        <input type="text" class="form-control" id="telefono_pro_editar" name="telefono_pro">
                     </div>
                     <div class="mb-3">
-                        <label for="fkid_ciu" class="form-label">Ciudad</label>
-                        <select class="form-select" id="fkid_ciu" name="fkid_ciu" required>
+                        <label for="fkid_ciu_editar" class="form-label">Ciudad</label>
+                        <select class="form-select" id="fkid_ciu_editar" name="fkid_ciu" required>
                             <option value="" disabled>Seleccione una ciudad</option>
                             {% for ciudad in ciudades %}
                                 <option value="{{ ciudad.id }}">{{ ciudad.nombre_ciu }}</option>

@@ -29,7 +29,7 @@ urlpatterns = [
 
     path('vistaPropietario/',vistaPropietario,name='vistaPropietario'),
     path('ingresarPropietario/',ingresarPropietario,name='ingresarPropietario'),
-
+    path('cargarPropietarioEditar/<int:propietario_id>/',cargarPropietarioEditar,name='cargarPropietarioEditar'),
 
     # aqui van para el crud de propietarios
     # path('vistaPropietario/',vistaPropietario,name='vistaPropietario'),
