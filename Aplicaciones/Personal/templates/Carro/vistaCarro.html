@@ -1,0 +1,128 @@
+{% comment %} tabla de empresa {% endcomment %}
+<div class="container">
+    <h1 class="mt-4">Lista de Automóviles</h1>
+    <div class="row">
+        <div class="col-6">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarAuto">
+                Agregar Nuevo
+            </button>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table" id="tbl-auto">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>COLOR</th>
+                    <th>PRECIO</th>
+                    <th>PLACA</th>
+                    <th>ID MODELO</th>
+                    <th>ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+            {%for auto in autos%}
+                <tr>
+                    <td style="width: 200px;">
+                        <p class="text-small small">{{ auto.id }}</p>
+                    </td>
+                    <td style=" width: 200px;"><p class="text-small small">{{ auto.color_car }}</p></td>
+                    <td style=" width: 100px;"><p class="text-small small">{{ auto.precio_car }}</p></td>
+                    <td style=" width: 100px;"><p class="text-small small">{{ auto.placa_com }}</p></td>
+                    <td style=" width: 100px;"><p class="text-small small">{{ auto.fkid_mod }}</p></td>
+                    <td style="width: 50px;">
+                        <div class="row">
+                            <div class="col-md-6"><button type="button" class="btn-sm rounded" onclick="abrirmodalVerAuto({{auto.id}});"><i class="fas fa-pen"></i></button></div>
+
+                            <div class="col-md-6"><button type="button" class=" btn-sm rounded" onclick="eliminarUnAuto({{auto.id}})"><i class="fas fa-trash"></i></button></div>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No hay automóviles registrados.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<!-- Modal para agregar modelo -->
+<div class="modal fade" id="modalAgregarAuto" tabindex="-1" aria-labelledby="modalAgregarAutoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAgregarAutoLabel">Agregar Auto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% csrf_token %}
+                <form id="formAgregarAuto" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label ><strong>COLOR:</strong></label>
+                                <input type="text" class="form-control" id="color" name="color" required>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label ><strong>PRECIO:</strong></label>
+                                <input type="text" class="form-control" id="precio" name="precio" required>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label ><strong>PLACA:</strong></label>
+                                <input type="text" class="form-control" id="placa" name="placa" required>
+                            </div>
+                        </div>
+                    </div>              
+                    <br>
+                    <div class="row">
+                        <button type="button" class="btn btn-primary" onclick="guardarDatosModelo();">Agregar Modelo</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para seleccionar y visualizar empresa -->
+<div class="modal fade" id="modalVerModelo" tabindex="-1" aria-labelledby="modalVerModeloLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalVerModeloLabel">Modelo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% csrf_token %}
+                <form id="formEditarModelo" enctype="multipart/form-data">
+                    <input type="hidden" id="verId" name="id">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label><strong>MODELO:</strong></label>
+                                <input type="text" class="form-control" id="verModelo" name="modelo">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label><strong>AÑO FABRICACIÓN:</strong></label>
+                                <input type="text" class="form-control" id="verFabricacion" name="fabricacion">
+                            </div>
+                        </div>
+                    </div> 
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="guardarDatosEditadosModelo()">Editar</button>
+            </div>
+        </div>
+    </div>
+</div>

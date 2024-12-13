@@ -125,3 +125,36 @@ function cargarPropietarioEditar(propietarioId) {
     })
     .catch(error => console.error('Error al cargar datos para editar:', error));
 }
+
+
+function editarCiudad(id) {
+
+    const nuevoNombrePro = document.getElementById('nombre_pro').value.trim();
+    const nuevoApellidoPro = document.getElementById('apellido_pro').value.trim();
+    const nuevoEmailPro = document.getElementById('email_pro').value.trim();
+    const nuevoTelefonoPro = document.getElementById('telefono_pro').value.trim();
+    const nuevoFkidCiu = document.getElementById('fkid_ciu').value;
+    const nuevoNombre = prompt('Ingrese el nuevo nombre de la ciudad:');
+    if (!nuevoNombre) return;
+
+    const formData = new FormData();
+    formData.append('nombre_ciu', nuevoNombre);
+
+    const csrfToken = getCookie('csrftoken');
+
+    fetch(`/editarCiudad/${id}/`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': csrfToken, // Agregar CSRF token
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        if (data.success) {
+            vistaCiudad(); // Refrescar lista
+        }
+    })
+    .catch(error => console.error('Error al editar ciudad:', error));
+}
