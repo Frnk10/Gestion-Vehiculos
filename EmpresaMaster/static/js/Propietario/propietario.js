@@ -63,6 +63,20 @@ function agregarPropietario() {
         return; // Detener la ejecución si algún campo está vacío
     }
 
+    // Validar formato de email (con una expresión regular simple)
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (!emailPattern.test(emailPro)) {
+        alert('Por favor, ingrese un correo electrónico válido.');
+        return;
+    }
+
+    // Validar teléfono (si se requiere un formato específico)
+    const telefonoPattern = /^[0-9]{10}$/; // Ejemplo de validación para 10 dígitos
+    if (!telefonoPattern.test(telefonoPro)) {
+        alert('Por favor, ingrese un número de teléfono válido (10 dígitos).');
+        return;
+    }
+
     // Crear un objeto FormData para enviar los datos al backend
     const formData = new FormData();
     formData.append('nombre_pro', nombrePro);
@@ -75,7 +89,7 @@ function agregarPropietario() {
     const csrfToken = getCookie('csrftoken'); 
 
     // Enviar la solicitud POST usando Fetch API
-    fetch('../ingresarPropietario/', {
+    fetch('../ingresarPropietario/', {  // Asegúrate de que esta URL sea la correcta
         method: 'POST',
         body: formData,
         headers: {
@@ -86,14 +100,14 @@ function agregarPropietario() {
     .then(data => {
         alert(data.message); 
         if (data.status === 'success') {
-            vistaPropietario(); 
+            vistaPropietario(); // Refrescar la lista de propietarios
         }
     })
     .catch(error => console.error('Error al agregar propietario:', error));
 }
 
 function cargarDatosEditar(propietarioId) {
-    fetch(`/editar-propietario/${propietarioId}/`, {
+    fetch(`../editarPropietario/${propietarioId}/`, {
         method: 'GET',
         headers: {
             'X-CSRFToken': getCookie('csrftoken')
