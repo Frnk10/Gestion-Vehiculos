@@ -84,6 +84,17 @@ DATABASES = {
     }
 }
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'carrodb',  # Nombre de tu base de datos
+        'USER': 'Dafail',           # Usuario de PostgreSQL
+        'PASSWORD': 'Edison1998*',    # Contraseña de tu usuario
+        'HOST': 'localhost',         # Dirección del servidor (o IP)
+        'PORT': '5432',              # Puerto (5432 es el predeterminado)
+    }
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
