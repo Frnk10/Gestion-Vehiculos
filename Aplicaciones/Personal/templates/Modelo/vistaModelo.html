@@ -1,0 +1,118 @@
+{% comment %} tabla de empresa {% endcomment %}
+<div class="container">
+    <h1 class="mt-4">Lista de Modelos</h1>
+    <div class="row">
+        <div class="col-6">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarModelo">
+                Agregar Nuevo
+            </button>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table" id="tbl-modelo">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>MODELO</th>
+                    <th>FABRICACIÓN</th>
+                    <th>ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+            {%for modelo in modelos%}
+                <tr>
+                    <td style="width: 200px;">
+                        <p class="text-small small">{{ modelo.id }}</p>
+                    </td>
+                    <td style=" width: 200px;"><p class="text-small small">{{ modelo.nombre_mod }}</p></td>
+                    <td style=" width: 100px;"><p class="text-small small">{{ modelo.fabricacion_mod }}</p></td>
+                    <td style="width: 50px;">
+                        <div class="row">
+                            <div class="col-md-6"><button type="button" class="btn-sm rounded" onclick="abrirmodalVerModelo({{modelo.id}});"><i class="fas fa-pen"></i></button></div>
+
+                            <div class="col-md-6"><button type="button" class=" btn-sm rounded" onclick="eliminarUnModelo({{modelo.id}})"><i class="fas fa-trash"></i></button></div>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No hay modelos registrados.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<!-- Modal para agregar modelo -->
+<div class="modal fade" id="modalAgregarModelo" tabindex="-1" aria-labelledby="modalAgregarModeloLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAgregarModeloLabel">Agregar Modelo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% csrf_token %}
+                <form id="formAgregarModelo" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label ><strong>MODELO:</strong></label>
+                                <input type="text" class="form-control" id="modelo" name="modelo" required>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label ><strong>AÑO FABRICACIÓN:</strong></label>
+                                <input type="text" class="form-control" id="fabricacion" name="fabricacion" required>
+                            </div>
+                        </div>
+                    </div>              
+                    <br>
+                    <div class="row">
+                        <button type="button" class="btn btn-primary" onclick="guardarDatosModelo();">Agregar Modelo</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para seleccionar y visualizar empresa -->
+<div class="modal fade" id="modalVerModelo" tabindex="-1" aria-labelledby="modalVerModeloLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalVerModeloLabel">Modelo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% csrf_token %}
+                <form id="formEditarModelo" enctype="multipart/form-data">
+                    <input type="hidden" id="verId" name="id">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label><strong>MODELO:</strong></label>
+                                <input type="text" class="form-control" id="verModelo" name="modelo">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label><strong>AÑO FABRICACIÓN:</strong></label>
+                                <input type="text" class="form-control" id="verFabricacion" name="fabricacion">
+                            </div>
+                        </div>
+                    </div> 
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="guardarDatosEditadosModelo()">Editar</button>
+            </div>
+        </div>
+    </div>
+</div>
