@@ -1,67 +1,96 @@
-{% comment %} tabla de propieario {% endcomment %}
-<div class="container">
-    <h1 class="mt-4">Lista de Propietarios</h1>
-    <div class="row">
-        <div class="col-6">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarPropietario">
-                Agregar Nuevo
-            </button>
-        </div>
-        <div class="col-6"></div>
+<div class="container mt-5">
+    <h2>Agregar Propietario</h2>
+
+    <!-- Formulario para agregar un propietario -->
+    <div class="container mb-4">
+        <form id="propietario-form">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-md-3">
+                    <label for="nombre_pro" class="form-label">Nombre</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="nombre_pro" name="nombre_pro" required>
+                </div>
+            </div>
+            <div class="row align-items-center justify-content-center mt-3">
+                <div class="col-md-3">
+                    <label for="apellido_pro" class="form-label">Apellido</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="apellido_pro" name="apellido_pro" required>
+                </div>
+            </div>
+            <div class="row align-items-center justify-content-center mt-3">
+                <div class="col-md-3">
+                    <label for="email_pro" class="form-label">Email</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="email" class="form-control" id="email_pro" name="email_pro" required>
+                </div>
+            </div>
+            <div class="row align-items-center justify-content-center mt-3">
+                <div class="col-md-3">
+                    <label for="telefono_pro" class="form-label">Teléfono</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="telefono_pro" name="telefono_pro" required>
+                </div>
+            </div>
+            <div class="row align-items-center justify-content-center mt-3">
+                <div class="col-md-3">
+                    <label for="fkid_ciu" class="form-label">Ciudad</label>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select" id="fkid_ciu" name="fkid_ciu" required>
+                        <option value="" selected disabled>Seleccione una ciudad</option>
+                        {% for ciudad in ciudades %}
+                            <option value="{{ ciudad.id }}">{{ ciudad.nombre_ciu }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row align-items-center justify-content-center mt-3">
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-success w-100" onclick="agregarPropietario()">Agregar Propietario</button>
+                </div>
+            </div>
+        </form>
     </div>
-    <div class="table-responsive">
-        <table class="table" id="tbl-propietarios">
+
+    <hr>
+
+    <!-- Tabla de propietarios -->
+    <h3 class="mt-4 text-center">Propietarios Existentes</h3>
+    <div class="table-responsive d-flex justify-content-center">
+        <table id="tbl-propietario" class="table table-striped table-bordered" style="width: 80%;">
             <thead>
                 <tr>
-                    <th>Nombres</th>
-                    <th>Apellidos</th>
-                    <th>Cédula</th>
-                    <th>Teléfono</th>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
                     <th>Email</th>
-                    <th>Dirección</th>
-                    <th>Foto</th>
-                    <th>Firma</th>
-                    <th>Estado</th>
-                    <th>Accion</th>
+                    <th>Teléfono</th>
+                    <th>Ciudad</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for propietario in propietarios %}
                 <tr>
-                    <td style="width: 200px;">
-                        <p class="text-small small">{{ propietario.nombres }}</p>
-                    </td>
-                    <td style=" width: 200px;"><p class="text-small small">{{ propietario.apellidos }}</p></td>
-                    <td style=" width: 100px;"><p class="text-small small">{{ propietario.cedula }}</p></td>
-                    <td style=" width: 100px;"><p class="text-small small">{{ propietario.telefono }}</p></td>
-                    <td style=" width: 100px;"><p class="text-small small">{{ propietario.email }}</p></td>
-                    <td style=" width: 200px;"><p class="text-small small">{{ propietario.direccion }}</p></td>
-                    <td>
-                        {% if propietario.foto %}
-                            <img src="{{ propietario.foto.url }}" alt="Foto de {{ propietario.nombres }}" style="width: 50px; height: auto;">
-                        {% else %}
-                            No disponible
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if propietario.firma %}
-                            <img src="{{ propietario.firma.url }}" alt="Foto de {{ propietario.nombres }}" style="width: 50px; height: auto;">
-                        {% else %}
-                            No disponible
-                        {% endif %}
-                    </td>
-                    <td><p class="text-small small">{{ propietario.estado }}</p></td>
-                    <td style="width: 50px;">
-                        <div class="row">
-                            <div class="col-md-6"><button type="button" class="btn-sm rounded" onclick="abrirModalVerPropietario({{propietario.id}});"><i class="fas fa-pen"></i></button></div>
-
-                            <div class="col-md-6"><button type="button" class=" btn-sm rounded" onclick="eliminarUnPropietario({{propietario.id}})"><i class="fas fa-trash"></i></button></div>
-                        </div>
+                    <td>{{ propietario.id }}</td>
+                    <td>{{ propietario.nombre_pro }}</td>
+                    <td>{{ propietario.apellido_pro }}</td>
+                    <td>{{ propietario.email_pro }}</td>
+                    <td>{{ propietario.telefono_pro }}</td>
+                    <td>{{ propietario.fkid_ciu.nombre_ciu }}</td>
+                    <td class="text-center">
+                        <button onclick="cargarDatosEditar(propietarioId)" data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-primary btn-sm mx-1"><i class="fas fa-pen"></i></button>
+                        <button onclick="eliminarPropietario({{ propietario.id }})" class="btn btn-danger btn-sm mx-1"><i class="fas fa-trash"></i></button>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="7">No hay propietarios registrados.</td>
+                    <td colspan="7" class="text-center">No hay propietarios</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -70,175 +99,43 @@
 </div>
 
 
-
-<!-- Modal para agregar propietario -->
-<div class="modal fade" id="modalAgregarPropietario" tabindex="-1" aria-labelledby="modalAgregarPropietarioLabel" aria-hidden="true">
+!-- Modal de edición -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalAgregarPropietarioLabel">Agregar Propietario</h5>
+                <h5 class="modal-title" id="editModalLabel">Editar Propietario</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                {% csrf_token %}
-                <form id="formAgregarPropietario" enctype="multipart/form-data">
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label ><strong>NOMBRES:</strong></label>
-                                <input type="text" class="form-control" id="nombres" name="nombres" required>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label ><strong>APELLIDOS:</strong></label>
-                                <input type="text" class="form-control" id="apellidos" name="apellidos" required>
-                            </div>
-                        </div>
+                <form id="editar-form">
+                    <div class="mb-3">
+                        <label for="nombre_pro" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombre_pro" name="nombre_pro">
                     </div>
-                <div class="row">
-                    <div class="col-6">
-                        <div class="form-group">
-                            <label ><strong>CEDULA:</strong></label>
-                            <input type="text" class="form-control" id="cedula" name="cedula" required>
-                        </div>
+                    <div class="mb-3">
+                        <label for="apellido_pro" class="form-label">Apellido</label>
+                        <input type="text" class="form-control" id="apellido_pro" name="apellido_pro">
                     </div>
-                    <div class="col-6">
-                        <div class="form-group">
-                            <label ><strong>TELÉFONO:</strong></label>
-                            <input type="text" class="form-control" id="telefono" name="telefono" required>
-                        </div>
+                    <div class="mb-3">
+                        <label for="email_pro" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email_pro" name="email_pro">
                     </div>
-                </div>
-
-                    <div class="form-group">
-                        <label ><strong>DIRECCIÓN:</strong></label>
-                        <textarea class="form-control" id="direccion" name="direccion" required></textarea>
+                    <div class="mb-3">
+                        <label for="telefono_pro" class="form-label">Teléfono</label>
+                        <input type="text" class="form-control" id="telefono_pro" name="telefono_pro">
                     </div>
-                    <div class="form-group">
-                        <label ><strong>EMAIL:</strong></label>
-                        <input type="email" class="form-control" id="email" name="email" required></input>
+                    <div class="mb-3">
+                        <label for="fkid_ciu" class="form-label">Ciudad</label>
+                        <select class="form-select" id="fkid_ciu" name="fkid_ciu" required>
+                            <option value="" disabled>Seleccione una ciudad</option>
+                            {% for ciudad in ciudades %}
+                                <option value="{{ ciudad.id }}">{{ ciudad.nombre_ciu }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
-                    
-                    <div class="row">
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label><strong>ESTADO:</strong></label>
-                                <select class="form-control" id="estado" name="estado">
-                                    <option value="ACTIVO" selected>ACTIVO</option>
-                                    <option value="INACTIVO">INACTIVO</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-8">
-                            <div class="form-group">
-                                <label ><strong>FOTO:</strong></label>
-                                <input type="file" class="form-control" id="foto" name="foto" accept="image/*">
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="form-group">
-                        <label ><strong>FIRMA:</strong></label>
-                        <input type="file" class="form-control" id="firma" name="firma" accept="image/*">
-                    </div>
-                    <br>
-                    <br>
-                    <div class="row">
-                        <button type="button" class="btn btn-primary" onclick="guardarDatosPropietario();">Agregar Propietario</button>
-                    </div>
-                    
+                    <button type="submit" class="btn btn-success">Guardar cambios</button>
                 </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal para seleccionar y visualizar propietario -->
-<div class="modal fade" id="modalVerPropietario" tabindex="-1" aria-labelledby="modalVerPropietarioLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalVerPropietarioLabel">Propietario</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                {% csrf_token %}
-                <form id="formEditarPropietario" enctype="multipart/form-data">
-                    <input type="hidden" id="verId" name="id">
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label ><Strong>NOMBRES:</Strong></label>
-                                <input type="text" class="form-control" id="verNombres" name="nombres" >
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label ><strong>APELLIDOS:</strong></label>
-                                <input type="text" class="form-control" id="verApellidos" name="apellidos" >
-                            </div>
-                        </div>
-                    </div> 
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label ><strong>CÉDULA:</strong></label>
-                                <input type="text" class="form-control" id="verCedula" name="cedula" >
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label ><strong>TELÉFONO:</strong></label>
-                                <input type="text" class="form-control" id="verTelefono" name="telefono" >
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label ><strong>EMAIL:</strong></label>
-                        <input type="email" class="form-control" id="verEmail" name="email" >
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                           
-                            <div class="form-group">
-                                <label ><strong>DIRECCIÓN:</strong></label>
-                                <textarea class="form-control" id="verDireccion" name="direccion" ></textarea>
-                            </div>
-                            
-                        </div>
-                        <div class="col-6">
-                            
-                            <div class="form-group">
-                                <label><strong>ESTADO:</strong></label>
-                                <select class="form-select" id="verEstado" name="estado">
-                                    <option value="ACTIVO">ACTIVO</option>
-                                    <option value="INACTIVO">INACTIVO</option>
-                                </select>
-                            </div>
-                            
-                        </div>
-                    </div>
-                    
-                        
-                    <div class="form-group">
-                        <label ><strong>FOTO:</strong></label>
-                        <img id="verFoto" src="" alt="Foto del propietario" class="img-thumbnail" style="max-width: 50%;">
-                        <input type="file" class="form-control mt-2" id="fotoNueva" name="fotoNueva" accept="image/*"> 
-                    </div>
-                    <br>
-                
-                    <div class="form-group">
-                        <label ><strong>FIRMA:</strong></label>
-                        <img id="verFirma" src="" alt="Firma del propietario" class="img-thumbnail" style="max-width: 50%;">
-                        <input type="file" class="form-control mt-2" id="firmaNueva" name="firmaNueva" accept="image/*"> 
-                    </div>
-
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" onclick="guardarDatosEditados()">Editar</button>
             </div>
         </div>
     </div>

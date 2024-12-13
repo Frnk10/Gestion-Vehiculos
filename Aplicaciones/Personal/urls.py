@@ -3,6 +3,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from .views.Navegador_views import vistaNavegador,inicio
 from .views.Logeo_views import *
+from .views.ciudad_views import *
+from .views.Propietario_views import *
 
 #rom .views.Propietario_views import vistaPropietario,agregarPropietario,obtenerUnPropietario,editarUnPropietario,eliminarUnPropietario
 
@@ -17,6 +19,17 @@ urlpatterns = [
     path('iniciarSesion/',iniciarSesion,name='iniciarSesion'),
     # LOGOUT
     path('cerrarSesion/',cerrarSesion,name='cerrarSesion'),
+
+
+    path('vistaCiudad/',vistaCiudad,name='vistCiudad'),
+    path('ingresarCiudad/',ingresarCiudad,name='ingresarCiudad'),
+    path('editarCiudad/<int:id>/',editarCiudad,name='editarCiudad'),
+    path('eliminarCiudad/<int:id>/',eliminarCiudad,name='eliminarCiudad'),
+
+
+    path('vistaPropietario/',vistaPropietario,name='vistaPropietario'),
+    path('ingresarPropietario/',ingresarPropietario,name='ingresarPropietario'),
+
 
     # aqui van para el crud de propietarios
     # path('vistaPropietario/',vistaPropietario,name='vistaPropietario'),
