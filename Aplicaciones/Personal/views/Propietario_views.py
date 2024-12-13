@@ -56,11 +56,11 @@ def editar_propietario(request, propietario_id):
 
         # Encuentra el propietario y actualízalo
         propietario = get_object_or_404(Propietario, id=propietario_id)
-        propietario.nombre = nombre
-        propietario.apellido = apellido
-        propietario.email = email
-        propietario.telefono = telefono
-        propietario.fkid_ciu_id = fkid_ciu  # Asumiendo que fkid_ciu es el ID de la ciudad
+        propietario.nombre_pro = nombre
+        propietario.apellido_pro = apellido
+        propietario.email_pro = email
+        propietario.telefono_pro = telefono
+        propietario.fkid_ciu = fkid_ciu  
 
         # Guarda los cambios en la base de datos
         propietario.save()
