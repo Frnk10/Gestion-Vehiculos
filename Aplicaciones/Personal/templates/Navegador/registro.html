@@ -102,7 +102,7 @@
                             {% if registro.errors.username %}
                                 <div class="input-group">
                                     <span class="input-group-text">
-                                        <i class="bi bi-person-circle" aria-hidden="true"></i>
+                                        <i class="fa fa-user" aria-hidden="true"></i>
                                     </span>
                                     <input type="text" name="username" id="username" class="form-control" 
                                     placeholder="Ingrese un nombre de usuario" value="{{registro.data.username}}">                           
@@ -115,10 +115,10 @@
                             {% else %}
                                 <div class="input-group mb-5">
                                     <span class="input-group-text">
-                                        <i class="bi bi-person-circle" aria-hidden="true"></i>
+                                        <i class="fa fa-user" aria-hidden="true"></i>
                                     </span>
                                     <input type="text" name="username" id="username" class="form-control" 
-                                    placeholder="Ingrese un nombre de usuario" value="{{registro.data.username}}">                           
+                                    placeholder="Ingrese nombre de usuario" value="{{registro.data.username}}">                           
                                 </div>
                             {% endif %}
                             <label for="password1" class="form-label">
@@ -176,10 +176,10 @@
                     </div>
                     <div class="text-center mt-2">
                         <button type="submit" class="btn btn-success mb-3" onclick="registrarUsuario();">
-                            <i class="bi bi-person-fill-add" aria-hidden="true"></i> Registrarse
+                            <i class="bi bi-person-fill-add" aria-hidden="true"></i> <b>Registrarse</b>
                         </button>
                         <button type="reset" class="btn btn-danger mb-3">
-                            <i class="bi bi-trash-fill" aria-hidden="true"></i> Limpiar
+                            <i class="bi bi-trash-fill" aria-hidden="true"></i> <b>Limpiar</b>
                         </button>
                     </div>                
                 </form>

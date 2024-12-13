@@ -30,13 +30,13 @@
 }
 
 .contenedor_inicio {
-    background-image: url('/static/img/fondo_inicio.png');
+    background-image: url('/static/img/auto2.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     border-radius: 10px;
     padding: 30px 0;
-    height: 200px;
+    height: 240px;
 }
 
 /*CONTENIDO*/
@@ -57,12 +57,13 @@
 header{
     width: 1212px;
     height: 140px;
-    background-color: #23282b;
+    background-image: url('/static/img/banner2.jpeg');
+    /* background-color: #23282b; */
     margin: 0px auto; /*con el "auto" coloca al contenido en el centro*/
 }
 
 #logoTipo{ /*Para centrar el contenido - contenedor*/
-    width: 68%;
+    width: 80%;
     height: 140px;
     margin: 0 auto;
     padding-top: 8px;
@@ -84,7 +85,8 @@ header{
     text-transform: uppercase; /*Texto en mayuscula*/
     font-family: Arial, Helvetica, sans-serif;
     font-weight: lighter; /*Letra mas fina*/
-    color: #2aa876;
+    color: #F9FBFC;
+    box-shadow: 0px 0px 30px #ade8f4;
 }
 
 /*BARRA NAVEGACION*/
@@ -111,16 +113,16 @@ nav > ul > li > a{
     display: block;
     padding-left: 15px;
     padding-right: 15px;
-    color: #d1d4d6;
+    color: #F9FBFC;
 }
 nav > ul > li > a:hover{
-    background: #2aa876;
-    box-shadow: 3px 0px 5px pink;
+    background: #0DCAF0;
+    box-shadow: 0px 0px 30px #ade8f4;
     color: white;
     transition: all 500ms;
 }
 #btn_login{
-    color: #d1d4d6;
+    color: #F9FBFC;
 }
 #btn_login:hover{
     color: white;
