@@ -14,203 +14,171 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function cargarModelos() {
+function vistaCarro() {
     const contenedorTablas = document.getElementById('contenedor-tablas');
-    contenedorTablas.innerHTML = '';
+    contenedorTablas.innerHTML = ''; // Limpiar la tabla antes de recargarla
 
-    fetch(`../vistaModelo`)
+    fetch('../vistaCarro/') // Asegúrate de que la URL esté correcta
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error en la red: ' + response.statusText);
             }
-            return response.text();
+            return response.text(); // Usamos text() si estamos esperando HTML
         })
         .then(html => {
-            contenedorTablas.innerHTML = html;
-            const tablaModelos = document.getElementById('tbl-modelo');
+            contenedorTablas.innerHTML = html; // Cargar la nueva tabla
+            const tablaCiudad = document.getElementById('tbl-auto');
 
-            if (!tablaModelos) {
+            if (!tablaCiudad) {
                 console.error('No se encontró el contenedor de la tabla.');
                 return; 
             }
             
-            $('#tbl-modelo').DataTable({
+            // Inicializar la tabla de DataTable si se encuentra
+            $('#tbl-auto').DataTable({
                 language: {
                     search: "Buscar:",
                 },
-                paging: false,          // Desactiva la paginación
-                ordering: false,        // Desactiva las flechas de ordenamiento
-                info: false,           // Desactiva el texto de información de la tabla
-                scrollX: false,         // Activa el desplazamiento horizontal
-                fixedHeader: true,     // Fija el encabezado y el buscador
+                paging: false,
+                ordering: false,
+                info: false,
+                scrollX: true,
+                fixedHeader: true,
             });
         })
         .catch(error => {
-            console.error('Error al cargar los modelos:', error);
+            console.error('Error al cargar los carros:', error);
         });
 }
-
-function guardarDatosModelo() {
-    const formularioElement = document.getElementById('formAgregarModelo');
-    const inputs = formularioElement.querySelectorAll('input, textarea'); // Seleccionar inputs y textareas
-    let allFieldsValid = true; // Variable para verificar si todos los campos son válidos
-
-   // Verifica si todos los campos están llenos
-   inputs.forEach(input => {
-    if (!input.value) {
-        allFieldsValid = false; // Marca como inválido si hay un campo vacío
-        input.classList.add('is-invalid'); // Agrega clase para mostrar error
-    } else {
-        input.classList.remove('is-invalid'); // Remueve la clase de error si el campo es válido
-        }
-    });
-
-    // Si hay campos vacíos, no envíes el formulario
-    if (!allFieldsValid) {
-        alert("Todos los campos son obligatorios."); // Mensaje de error
-        return; // Detener la ejecución de la función
+function agregarCarro() {
+    // Obtener el formulario
+    const form = document.getElementById('formAgregarCarro');
+    
+    // Capturar los valores directamente del formulario
+    const colorCar = form.querySelector('#color_car').value;
+    const precioCar = form.querySelector('#precio_car').value;
+    const placaCar = form.querySelector('#placa_car').value;
+    const fkidMod = form.querySelector('#fkid_mod').value;
+    
+    // Validar que se haya seleccionado un modelo
+    if (!fkidMod) {
+        alert('Debe seleccionar un modelo');
+        return;
     }
 
-    const formulario = new FormData(formularioElement); // Crear FormData después de verificar los campos
+    // Crear un objeto FormData
+    const formData = new FormData();
+    formData.append('color_car', colorCar);
+    formData.append('precio_car', precioCar);
+    formData.append('placa_car', placaCar);
+    formData.append('fkid_mod', fkidMod);
 
-    fetch('/agregarModelo/', {  
+    const csrfToken = getCookie('csrftoken'); 
+    // Enviar la solicitud mediante fetch
+    fetch('../ingresarCarro/', {
         method: 'POST',
-        body: formulario,
+        body: formData,
         headers: {
-            'X-CSRFToken': getCookie('csrftoken')  
-        }
+            'X-CSRFToken': csrfToken // Agregar el CSRF token a los encabezados
+        },
     })
-    .then(response => {
-        if (!response.ok) {
-            return response.json().then(data => {
-                throw new Error(data.error || 'Error en la red');
-            });
-        }
-        return response.json(); 
-    })
+    .then(response => response.json())
     .then(data => {
-        console.log('Modelo agregado:', data);
-        
-        // Muestra mensaje de éxito
-        Swal.fire({
-            title: "CONFIRMACIÓN",
-            text: data.mensaje || "Modelo agregado correctamente.",
-            icon: 'success'
-        });
-
-        $('#modalAgregarModelo').modal('hide');
-
-        Swal.fire({
-            title: "CONFIRMACIÓN",
-            text: "Modelo agregado exitosamente.",
-            icon: 'success'
-        })
-        cargarModelos();
+        alert(data.message); 
+        if (data.success) {
+            vistaCarro(); // Llamar a la función vistaCarro después de agregar el carro
+        }
     })
-    .catch(error => {
-        console.error('Error al agregar el modelo:', error);
-        // Manejo de errores específico
-        if (error.message.includes('El modelo ya ha sido registrado')) {
-            alert('El modelo ingresado ya está registrado.');
-        } else {
-            alert('Ocurrió un error al agregar el modelo. Intenta nuevamente.');
-        }
-    });
+    .catch(error => console.error('Error al agregar automóvil:', error));
 }
 
-function abrirmodalVerModelo(id_mod) {
-    fetch(`/obtenerUnModelo/${id_mod}/`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error al obtener el modelo: ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-            document.getElementById('verId').value = data.id;
-            document.getElementById('verModelo').value = data.modelo; 
-            document.getElementById('verFabricacion').value = data.fabricacion; 
-            $('#modalVerModelo').modal('show');
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-}
 
-function guardarDatosEditadosModelo() {
-    const id_mod = document.getElementById('verId').value; 
-    const formularioElement = document.getElementById('formEditarModelo');
-    const inputs = formularioElement.querySelectorAll('input, textarea'); // Seleccionar inputs y textareas
-    let allFieldsValid = true;
-    inputs.forEach(input => {
-        if (!input.value && input.type !== "select" && input.type !== "file") {
-            allFieldsValid = false; // Marca como inválido si hay un campo vacío
-            input.classList.add('is-invalid'); // Agrega clase para mostrar error
-        } else {
-            input.classList.remove('is-invalid'); // Remueve la clase de error si el campo es válido
-        }
-    });
+function eliminarCarro(carroId) {
+    const csrfToken = getCookie('csrftoken'); // Obtén el CSRF token
 
-    // Si hay campos vacíos, no envíes el formulario
-    if (!allFieldsValid) {
-        alert("Algunos  campos son necesarios "); // Mensaje de error
-        return; // Detener la ejecución de la función
-    }
-
-    const formulario = new FormData(formularioElement);
-
-    fetch(`/editarUnModelo/${id_mod}/`, {  
-        method: 'POST',
-        body: formulario,
+    // Enviar la solicitud DELETE mediante fetch
+    fetch(`../eliminarCarro/${carroId}/`, {
+        method: 'DELETE', // Usamos DELETE para eliminar
         headers: {
-            'X-CSRFToken': getCookie('csrftoken') 
-        }
+            'X-CSRFToken': csrfToken  // Incluir el CSRF token en los encabezados
+        },
     })
-    .then(response => {
-        if (!response.ok) {
-            return response.json().then(errorData => {
-                throw new Error(errorData.error || 'Error desconocido');
-            });
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        if (data.success) {
+            vistaCarro(); // Actualiza la vista de carros después de eliminar
         }
-        Swal.fire({
-            title: "CONFIRMACIÓN",
-            text: "Modelo editado",
-            icon: 'success'
-        })
-        $('#modalVerModelo').modal('hide'); 
-        cargarModelos();  
     })
     .catch(error => {
-        console.error('Error al actualizar el modelo:', error);
-        alert(`Error: ${error.message}`); 
+        console.error('Error al eliminar el carro:', error);
     });
 }
 
-function eliminarUnModelo(id_mod) {
-    const confirmacion = confirm('¿Estás seguro de que deseas eliminar este modelo?');
-    if (confirmacion) {
-        fetch(`/eliminarUnModelo/${id_mod}/`, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRFToken': getCookie('csrftoken') 
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                return response.json().then(data => {
-                    throw new Error(data.error || 'Error en la red');
+function abrirmodalVerCarro(carroId) {
+    fetch(`/cargarCarroEditar/${carroId}/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Rellenar los campos del formulario con los datos
+                document.getElementById('carro_id_editar').value = carroId;
+                document.getElementById('color_car_editar').value = data.color_car;
+                document.getElementById('precio_car_editar').value = data.precio_car;
+                document.getElementById('placa_car_editar').value = data.placa_car;
+
+                // Cargar el select con todas las opciones de modelos
+                const selectModelo = document.getElementById('fkid_mod_editar');
+                selectModelo.innerHTML = ''; // Limpiar las opciones previas
+                data.modelos.forEach(modelo => {
+                    const option = document.createElement('option');
+                    option.value = modelo.id;
+                    option.textContent = modelo.nombre_mod;
+                    if (modelo.id === data.fkid_mod) {
+                        option.selected = true; // Seleccionar el modelo actual por defecto
+                    }
+                    selectModelo.appendChild(option);
                 });
+
+                // Mostrar el modal
+                $('#modalEditarCarro').modal('show');
+            } else {
+                alert('Error al cargar los datos del vehículo');
             }
-            Swal.fire({
-                title: "ELIMINACIÓN",
-                text: "Modelo Eliminado",
-                icon: 'error'
-            })
-            cargarModelos();
         })
-        .catch(error => {
-            console.error('Error al eliminar el modelo:', error);
-            alert(error.message);  
-        });
-    }
+        .catch(error => console.error('Error al cargar el vehículo:', error));
+}
+    
+
+function editarCarro() {
+    const form = document.getElementById('formEditarCarro');
+    const carroId = form.querySelector('#carro_id_editar').value;
+    const colorCar = form.querySelector('#color_car_editar').value;
+    const precioCar = form.querySelector('#precio_car_editar').value;
+    const placaCar = form.querySelector('#placa_car_editar').value;
+    const fkidMod = form.querySelector('#fkid_mod_editar').value;
+
+    const formData = new FormData();
+    formData.append('carro_id_editar', carroId);
+    formData.append('color_car_editar', colorCar);
+    formData.append('precio_car_editar', precioCar);
+    formData.append('placa_car_editar', placaCar);
+    formData.append('fkid_mod_editar', fkidMod);
+
+    const csrfToken = getCookie('csrftoken'); // Obtener el token CSRF
+
+    fetch(`/editarCarro/${carroId}/`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': csrfToken
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        if (data.success) {
+            vistaCarro(); // Actualiza la lista de carros después de la edición
+        }
+    })
+    .catch(error => console.error('Error al editar el carro:', error));
 }

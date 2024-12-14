@@ -1,13 +1,38 @@
-{% comment %} tabla de empresa {% endcomment %}
 <div class="container">
     <h1 class="mt-4">Lista de Automóviles</h1>
-    <div class="row">
-        <div class="col-6">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarAuto">
-                Agregar Nuevo
-            </button>
+    
+    <!-- Formulario para agregar automóvil -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h5>Agregar Nuevo Automóvil</h5>
+            <form id="formAgregarCarro">
+                <div class="mb-3">
+                    <label for="color_car" class="form-label">Color</label>
+                    <input type="text" class="form-control" id="color_car" name="color_car" required>
+                </div>
+                <div class="mb-3">
+                    <label for="precio_car" class="form-label">Precio</label>
+                    <input type="number" class="form-control" id="precio_car" name="precio_car" step="0.01" required>
+                </div>
+                <div class="mb-3">
+                    <label for="placa_com" class="form-label">Placa</label>
+                    <input type="text" class="form-control" id="placa_car" name="placa_car" required>
+                </div>
+                <div class="mb-3">
+                    <label for="fkid_mod" class="form-label">Modelo</label>
+                    <select class="form-select" id="fkid_mod" name="fkid_mod" required>
+                        <option value="" disabled >Seleccione un modelo</option>
+                        {% for modelo in modelos %}
+                            <option value="{{ modelo.id }}">{{ modelo.nombre_mod }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="agregarCarro();">Agregar</button>
+            </form>
         </div>
     </div>
+    
+    <!-- Tabla de automóviles -->
     <div class="table-responsive">
         <table class="table" id="tbl-auto">
             <thead>
@@ -21,24 +46,35 @@
                 </tr>
             </thead>
             <tbody>
-            {%for auto in autos%}
+            {% for auto in autos %}
                 <tr>
                     <td style="width: 200px;">
                         <p class="text-small small">{{ auto.id }}</p>
                     </td>
-                    <td style=" width: 200px;"><p class="text-small small">{{ auto.color_car }}</p></td>
-                    <td style=" width: 100px;"><p class="text-small small">{{ auto.precio_car }}</p></td>
-                    <td style=" width: 100px;"><p class="text-small small">{{ auto.placa_com }}</p></td>
-                    <td style=" width: 100px;"><p class="text-small small">{{ auto.fkid_mod }}</p></td>
+                    <td style="width: 200px;">
+                        <p class="text-small small">{{ auto.color_car }}</p>
+                    </td>
+                    <td style="width: 100px;">
+                        <p class="text-small small">{{ auto.precio_car }}</p>
+                    </td>
+                    <td style="width: 100px;">
+                        <p class="text-small small">{{ auto.placa_car }}</p>
+                    </td>
+                    <td style="width: 100px;">
+                        <p class="text-small small">{{ auto.fkid_mod }}</p>
+                    </td>
                     <td style="width: 50px;">
                         <div class="row">
-                            <div class="col-md-6"><button type="button" class="btn-sm rounded" onclick="abrirmodalVerAuto({{auto.id}});"><i class="fas fa-pen"></i></button></div>
-
-                            <div class="col-md-6"><button type="button" class=" btn-sm rounded" onclick="eliminarUnAuto({{auto.id}})"><i class="fas fa-trash"></i></button></div>
+                            <div class="col-md-6">
+                                <button type="button" class="btn-sm rounded" data-bs-toggle="modal" data-bs-target="#modalEditarCarro" onclick="abrirmodalVerCarro({{auto.id}});"><i class="fas fa-pen"></i></button>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" class="btn-sm rounded" onclick="eliminarCarro({{auto.id}})"><i class="fas fa-trash"></i></button>
+                            </div>
                         </div>
                     </td>
                 </tr>
-                {% empty %}
+            {% empty %}
                 <tr>
                     <td colspan="6">No hay automóviles registrados.</td>
                 </tr>
@@ -49,79 +85,38 @@
 </div>
 
 
-
-<!-- Modal para agregar modelo -->
-<div class="modal fade" id="modalAgregarAuto" tabindex="-1" aria-labelledby="modalAgregarAutoLabel" aria-hidden="true">
+<!-- Modal de Edición de Vehículo -->
+<div class="modal fade" id="modalEditarCarro" tabindex="-1" aria-labelledby="modalEditarCarroLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalAgregarAutoLabel">Agregar Auto</h5>
+                <h5 class="modal-title" id="modalEditarCarroLabel">Editar Vehículo</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                {% csrf_token %}
-                <form id="formAgregarAuto" enctype="multipart/form-data">
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label ><strong>COLOR:</strong></label>
-                                <input type="text" class="form-control" id="color" name="color" required>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label ><strong>PRECIO:</strong></label>
-                                <input type="text" class="form-control" id="precio" name="precio" required>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label ><strong>PLACA:</strong></label>
-                                <input type="text" class="form-control" id="placa" name="placa" required>
-                            </div>
-                        </div>
-                    </div>              
-                    <br>
-                    <div class="row">
-                        <button type="button" class="btn btn-primary" onclick="guardarDatosModelo();">Agregar Modelo</button>
+                <!-- Formulario de Edición -->
+                <form id="formEditarCarro">
+                    <input type="text" id="carro_id_editar" value="">
+                    <div class="mb-3">
+                        <label for="color_car" class="form-label">Color del carro:</label>
+                        <input type="text" id="color_car_editar" name="color_car_editar" class="form-control">
                     </div>
+                    <div class="mb-3">
+                        <label for="precio_car" class="form-label">Precio del carro:</label>
+                        <input type="text" id="precio_car_editar" name="precio_car_editar" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="placa_car" class="form-label">Placa del carro:</label>
+                        <input type="text" id="placa_car_editar" name="placa_car_editar" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="fkid_mod" class="form-label">Modelo del carro:</label>
+                        <select id="fkid_mod_editar" name="fkid_mod_editar" class="form-select">
+                            <option value="">Cargando modelos...</option> <!-- Esto se reemplazará dinámicamente -->
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="editarCarro();">Actualizar Vehículo</button>
                 </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal para seleccionar y visualizar empresa -->
-<div class="modal fade" id="modalVerModelo" tabindex="-1" aria-labelledby="modalVerModeloLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalVerModeloLabel">Modelo</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                {% csrf_token %}
-                <form id="formEditarModelo" enctype="multipart/form-data">
-                    <input type="hidden" id="verId" name="id">
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label><strong>MODELO:</strong></label>
-                                <input type="text" class="form-control" id="verModelo" name="modelo">
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label><strong>AÑO FABRICACIÓN:</strong></label>
-                                <input type="text" class="form-control" id="verFabricacion" name="fabricacion">
-                            </div>
-                        </div>
-                    </div> 
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" onclick="guardarDatosEditadosModelo()">Editar</button>
             </div>
         </div>
     </div>
