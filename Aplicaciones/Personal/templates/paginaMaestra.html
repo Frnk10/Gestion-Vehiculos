@@ -123,28 +123,50 @@
     <script src="{% static 'plantilla/js/plugin/datatables/datatables.min.js' %}"></script>
 
     <!--SWEETALERT-->
-    <script src="{% static 'plantilla/js/plugin/sweetalert/sweetalert.js' %}"></script>
+    <!-- <script src="{% static 'plantilla/js/plugin/sweetalert/sweetalert.js' %}"></script> -->
+    
+    <!-- Importando iziToast desde CDN -->
+    <!-- Agregar iziToast CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
+    <!-- Agregar iziToast JS -->
+    <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+
     
     <!-- MOSTRAR MENSAJES -->
     {% if messages %}
         {% for mensaje in messages %}
-            {% if mensaje.tags == 'success' %}
-                <script>
-                    Swal.fire({
-                    title: "CONFIRMACIÓN",
-                    text: "{{mensaje}}",
-                    icon: "success"
-                    });
-                </script>
-            {% elif mensaje.tags == 'error' %}
-                <script>
-                    Swal.fire({
-                    title: "ERROR",
-                    text: "{{mensaje}}",
-                    icon: "error"
-                    });
-                </script>
-            {% endif %}
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const mensajeTag = "{{ mensaje.tags|escapejs }}";
+                    const mensajeTexto = "{{ mensaje|escapejs }}";
+
+                    if (mensajeTag === "success") {
+                        iziToast.success({
+                            title: 'Éxito',
+                            message: mensajeTexto,
+                            position: 'topLeft'
+                        });
+                    } else if (mensajeTag === "error") {
+                        iziToast.error({
+                            title: 'Error',
+                            message: mensajeTexto,
+                            position: 'topLeft'
+                        });
+                    } else if (mensajeTag === "warning") {
+                        iziToast.warning({
+                            title: 'Advertencia',
+                            message: mensajeTexto,
+                            position: 'topLeft'
+                        });
+                    } else if (mensajeTag === "info") {
+                        iziToast.info({
+                            title: 'Información',
+                            message: mensajeTexto,
+                            position: 'topLeft'
+                        });
+                    }
+                });
+            </script>
         {% endfor %}
     {% endif %}
 </body>

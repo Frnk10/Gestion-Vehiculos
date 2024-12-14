@@ -3,13 +3,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 from .views.Navegador_views import vistaNavegador,inicio
 from .views.Logeo_views import *
-<<<<<<< HEAD
 from .views.Modelo_views import *
-=======
+from .views.Auto_views import *
 from .views.ciudad_views import *
 from .views.Propietario_views import *
->>>>>>> 2dd416f55185efc7e7e3ea5e1a17fce7b662314c
-
 #rom .views.Propietario_views import vistaPropietario,agregarPropietario,obtenerUnPropietario,editarUnPropietario,eliminarUnPropietario
 
 
@@ -24,14 +21,19 @@ urlpatterns = [
     # LOGOUT
     path('cerrarSesion/',cerrarSesion,name='cerrarSesion'),
 
-<<<<<<< HEAD
-    # aqui van para el crud de empresa
+    # aqui van para el crud de modelo
     path('vistaModelo/', vistaModelo, name='vistaModelo'),
     path('agregarModelo/', agregarModelo, name='agregarModelo'),
     path('obtenerUnModelo/<int:id_mod>/', obtenerUnModelo, name='obtenerUnModelo'),
     path('editarUnModelo/<int:id_mod>/', editarUnModelo, name='editarUnModelo'),
     path('eliminarUnModelo/<int:id_mod>/', eliminarUnModelo, name='eliminarUnModelo'),
-=======
+
+    # aqui van para el crud de carro
+    path('vistaAuto/', vistaAuto, name='vistaAuto'),
+    path('ingresarAuto/', ingresarAuto, name='ingresarAuto'),
+    path('cargarAutoEditar/<int:id_auto>/', cargarAutoEditar, name='cargarAutoEditar'),
+    path('editar_auto/<int:id_auto>/', editar_auto, name='editar_auto'),
+    path('eliminar_auto/<int:id_auto>/', eliminar_auto, name='eliminar_auto'),
 
     path('vistaCiudad/',vistaCiudad,name='vistCiudad'),
     path('ingresarCiudad/',ingresarCiudad,name='ingresarCiudad'),
@@ -42,7 +44,6 @@ urlpatterns = [
     path('vistaPropietario/',vistaPropietario,name='vistaPropietario'),
     path('ingresarPropietario/',ingresarPropietario,name='ingresarPropietario'),
     path('cargarPropietarioEditar/<int:propietario_id>/',cargarPropietarioEditar,name='cargarPropietarioEditar'),
->>>>>>> 2dd416f55185efc7e7e3ea5e1a17fce7b662314c
 
     # aqui van para el crud de propietarios
     # path('vistaPropietario/',vistaPropietario,name='vistaPropietario'),

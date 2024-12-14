@@ -21,3 +21,7 @@
 .mt-5 {
     margin-top: 3rem !important; /* Margen superior debajo del header */
 }
+
+.btn-acciones button{
+    width: 45px;
+}

@@ -54,7 +54,12 @@ function agregarCiudad() {
 
     // Validar que el campo no esté vacío
     if (!nombreCiudad) {
-        alert('Por favor, ingrese el nombre de la ciudad.');
+        iziToast.info({
+            title: "AVISO",
+            message: "Algunos campos son necesarios", // Mensaje de error
+            position: "topCenter", // Opcional: puedes ajustar la posición
+            timeout: 3000 // Opcional: duración de la notificación en milisegundos
+        })
         return; // Detener la ejecución de la función
     }
 
@@ -72,16 +77,37 @@ function agregarCiudad() {
     })
     .then(response => response.json())
     .then(data => {
-        alert(data.message);
+        iziToast.success({
+            title: "CONFIRMACIÓN",
+            message: "Ciudad agregada correctamente",
+            position: "topLeft", // Opcional: puedes ajustar la posición
+            timeout: 3000 // Opcional: duración de la notificación en milisegundos
+        })
         if (data.success) {
             vistaCiudad(); // Refrescar lista
         }
     })
-    .catch(error => console.error('Error al agregar ciudad:', error));
+    .catch(error => {
+        console.error('Error al agregar la ciudad:', error);
+        iziToast.error({
+            title: "ERROR",
+            message: "Error al agregar la cuidad",
+            position: "topCenter", // Opcional: puedes ajustar la posición
+            timeout: 3000 // Opcional: duración de la notificación en milisegundos
+        })
+    });
 }
 function editarCiudad(id) {
     const nuevoNombre = prompt('Ingrese el nuevo nombre de la ciudad:');
-    if (!nuevoNombre) return;
+    if (!nuevoNombre) {
+        iziToast.warning({
+            title: "AVISO",
+            message: "Ingrese el nuevo nombre de la ciudad", // Mensaje de error
+            position: "topCenter", // Opcional: puedes ajustar la posición
+            timeout: 3000 // Opcional: duración de la notificación en milisegundos
+        })
+        return;
+    }
 
     const formData = new FormData();
     formData.append('nombre_ciu', nuevoNombre);
@@ -97,12 +123,25 @@ function editarCiudad(id) {
     })
     .then(response => response.json())
     .then(data => {
-        alert(data.message);
+        iziToast.success({
+            title: "CONFIRMACIÓN",
+            message: "Ciudad editada correctamente",
+            position: "topLeft", // Opcional: puedes ajustar la posición
+            timeout: 3000 // Opcional: duración de la notificación en milisegundos
+        })
         if (data.success) {
             vistaCiudad(); // Refrescar lista
         }
     })
-    .catch(error => console.error('Error al editar ciudad:', error));
+    .catch(error => {
+        console.error('Error al actualizar ciudad:', error);
+        iziToast.error({
+            title: "ERROR",
+            message: "Error al actualizar la ciudad",
+            position: "topCenter", // Opcional: puedes ajustar la posición
+            timeout: 3000 // Opcional: duración de la notificación en milisegundos
+        })
+    });
 }
 
 
@@ -119,10 +158,23 @@ function eliminarCiudad(id) {
     })
     .then(response => response.json())
     .then(data => {
-        alert(data.message);
+        iziToast.warning({
+            title: "ELIMINACIÓN",
+            message: "Ciudad eliminada correctamente",
+            position: "topLeft", // Opcional: puedes ajustar la posición
+            timeout: 3000 // Opcional: duración de la notificación en milisegundos
+        })
         if (data.success) {
             vistaCiudad(); // Refrescar lista
         }
     })
-    .catch(error => console.error('Error al eliminar ciudad:', error));
+    .catch(error => {
+        console.error('Error al eliminar la ciudad:', error);
+        iziToast.error({
+            title: "ERROR",
+            message: "Error al eliminar la ciudad",
+            position: "topCenter", // Opcional: puedes ajustar la posición
+            timeout: 3000 // Opcional: duración de la notificación en milisegundos
+        })
+    });
 }

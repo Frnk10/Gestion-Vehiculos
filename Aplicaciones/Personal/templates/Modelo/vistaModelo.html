@@ -1,6 +1,8 @@
 {% comment %} tabla de empresa {% endcomment %}
 <div class="container">
-    <h1 class="mt-4">Lista de Modelos</h1>
+    <!-- Tabla de modelos -->
+    <hr>
+    <h3 class="mt-4 text-center">Modelos Existentes</h3>
     <div class="row">
         <div class="col-6">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarModelo">
@@ -27,10 +29,10 @@
                     <td style=" width: 200px;"><p class="text-small small">{{ modelo.nombre_mod }}</p></td>
                     <td style=" width: 100px;"><p class="text-small small">{{ modelo.fabricacion_mod }}</p></td>
                     <td style="width: 50px;">
-                        <div class="row">
-                            <div class="col-md-6"><button type="button" class="btn-sm rounded" onclick="abrirmodalVerModelo({{modelo.id}});"><i class="fas fa-pen"></i></button></div>
+                        <div class="row btn-acciones">
+                            <div class="col-md-6"><button type="button" class="btn btn-warning rounded" onclick="abrirmodalVerModelo({{modelo.id}});"><i class="fas fa-pen"></i></button></div>
 
-                            <div class="col-md-6"><button type="button" class=" btn-sm rounded" onclick="eliminarUnModelo({{modelo.id}})"><i class="fas fa-trash"></i></button></div>
+                            <div class="col-md-6"><button type="button" class=" btn btn-danger rounded" onclick="eliminarUnModelo({{modelo.id}})"><i class="fas fa-trash"></i></button></div>
                         </div>
                     </td>
                 </tr>
@@ -73,7 +75,7 @@
                     </div>              
                     <br>
                     <div class="row">
-                        <button type="button" class="btn btn-primary" onclick="guardarDatosModelo();">Agregar Modelo</button>
+                        <button type="button" class="btn btn-success" onclick="guardarDatosModelo();">Agregar Modelo</button>
                     </div>
                 </form>
             </div>

@@ -40,7 +40,7 @@ function vistaPropietario(){
                 paging: false,          // Desactiva la paginación
                 ordering: false,        // Desactiva las flechas de ordenamiento
                 info: false,           // Desactiva el texto de información de la tabla
-                scrollX: true,         // Activa el desplazamiento horizontal
+                scrollX: false,         // Activa el desplazamiento horizontal
                 fixedHeader: true,     // Fija el encabezado y el buscador
             });
         })
@@ -59,21 +59,36 @@ function agregarPropietario() {
 
     // Validar que los campos no estén vacíos
     if (!nombrePro || !apellidoPro || !emailPro || !telefonoPro || !fkidCiu) {
-        alert('Por favor, complete todos los campos.');
+        iziToast.info({
+            title: "AVISO",
+            message: "Algunos campos son necesarios", // Mensaje de error
+            position: "topCenter", // Opcional: puedes ajustar la posición
+            timeout: 3000 // Opcional: duración de la notificación en milisegundos
+        })
         return; // Detener la ejecución si algún campo está vacío
     }
 
     // Validar formato de email (con una expresión regular simple)
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     if (!emailPattern.test(emailPro)) {
-        alert('Por favor, ingrese un correo electrónico válido.');
+        iziToast.warning({
+            title: "AVISO",
+            message: "Por favor, ingrese un correo electrónico válido.", // Mensaje de error
+            position: "topCenter", // Opcional: puedes ajustar la posición
+            timeout: 3000 // Opcional: duración de la notificación en milisegundos
+        })
         return;
     }
 
     // Validar teléfono (si se requiere un formato específico)
     const telefonoPattern = /^[0-9]{10}$/; // Ejemplo de validación para 10 dígitos
     if (!telefonoPattern.test(telefonoPro)) {
-        alert('Por favor, ingrese un número de teléfono válido (10 dígitos).');
+        iziToast.warning({
+            title: "AVISO",
+            message: "Por favor, ingrese un número de teléfono válido (10 dígitos).", // Mensaje de error
+            position: "topCenter", // Opcional: puedes ajustar la posición
+            timeout: 3000 // Opcional: duración de la notificación en milisegundos
+        })
         return;
     }
 
@@ -98,12 +113,25 @@ function agregarPropietario() {
     })
     .then(response => response.json())
     .then(data => {
-        alert(data.message); 
+        iziToast.success({
+            title: "CONFIRMACIÓN",
+            message: "Propietario agregado correctamente",
+            position: "topLeft", // Opcional: puedes ajustar la posición
+            timeout: 3000 // Opcional: duración de la notificación en milisegundos
+        })
         if (data.status === 'success') {
             vistaPropietario(); // Refrescar la lista de propietarios
         }
     })
-    .catch(error => console.error('Error al agregar propietario:', error));
+    .catch(error => {
+        console.error('Error al agregar propietario:', error);
+        iziToast.error({
+            title: "ERROR",
+            message: "Error al agregar propietario",
+            position: "topCenter", // Opcional: puedes ajustar la posición
+            timeout: 3000 // Opcional: duración de la notificación en milisegundos
+        })
+    });
 }
 
 function cargarPropietarioEditar(propietarioId) {
@@ -135,7 +163,15 @@ function editarCiudad(id) {
     const nuevoTelefonoPro = document.getElementById('telefono_pro').value.trim();
     const nuevoFkidCiu = document.getElementById('fkid_ciu').value;
     const nuevoNombre = prompt('Ingrese el nuevo nombre de la ciudad:');
-    if (!nuevoNombre) return;
+    if (!nuevoNombre) {
+        iziToast.warning({
+            title: "AVISO",
+            message: "Ingrese el nuevo nombre de la ciudad", // Mensaje de error
+            position: "topCenter", // Opcional: puedes ajustar la posición
+            timeout: 3000 // Opcional: duración de la notificación en milisegundos
+        })
+        return;
+    }
 
     const formData = new FormData();
     formData.append('nombre_ciu', nuevoNombre);
@@ -151,10 +187,23 @@ function editarCiudad(id) {
     })
     .then(response => response.json())
     .then(data => {
-        alert(data.message);
+        iziToast.success({
+            title: "CONFIRMACIÓN",
+            message: "Propietario editado correctamente",
+            position: "topLeft", // Opcional: puedes ajustar la posición
+            timeout: 3000 // Opcional: duración de la notificación en milisegundos
+        })
         if (data.success) {
             vistaCiudad(); // Refrescar lista
         }
     })
-    .catch(error => console.error('Error al editar ciudad:', error));
+    .catch(error => {
+        console.error('Error al actualizar propietario:', error);
+        iziToast.error({
+            title: "ERROR",
+            message: "Error al actualizar propietario",
+            position: "topCenter", // Opcional: puedes ajustar la posición
+            timeout: 3000 // Opcional: duración de la notificación en milisegundos
+        })
+    });
 }

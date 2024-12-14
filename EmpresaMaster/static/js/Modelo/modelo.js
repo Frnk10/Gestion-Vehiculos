@@ -90,20 +90,13 @@ function guardarDatosModelo() {
     })
     .then(data => {
         console.log('Modelo agregado:', data);
-        
         // Muestra mensaje de éxito
-        Swal.fire({
-            title: "CONFIRMACIÓN",
-            text: data.mensaje || "Modelo agregado correctamente.",
-            icon: 'success'
-        });
-
         $('#modalAgregarModelo').modal('hide');
-
-        Swal.fire({
+        iziToast.success({
             title: "CONFIRMACIÓN",
-            text: "Modelo agregado exitosamente.",
-            icon: 'success'
+            message: "Modelo agregado correctamente",
+            position: "topLeft", // Opcional: puedes ajustar la posición
+            timeout: 3000 // Opcional: duración de la notificación en milisegundos
         })
         cargarModelos();
     })
@@ -153,7 +146,12 @@ function guardarDatosEditadosModelo() {
 
     // Si hay campos vacíos, no envíes el formulario
     if (!allFieldsValid) {
-        alert("Algunos  campos son necesarios "); // Mensaje de error
+        iziToast.info({
+            title: "AVISO",
+            message: "Algunos campos son necesarios", // Mensaje de error
+            position: "topCenter", // Opcional: puedes ajustar la posición
+            timeout: 3000 // Opcional: duración de la notificación en milisegundos
+        })
         return; // Detener la ejecución de la función
     }
 
@@ -172,17 +170,23 @@ function guardarDatosEditadosModelo() {
                 throw new Error(errorData.error || 'Error desconocido');
             });
         }
-        Swal.fire({
+        iziToast.success({
             title: "CONFIRMACIÓN",
-            text: "Modelo editado",
-            icon: 'success'
+            message: "Modelo editado correctamente",
+            position: "topLeft", // Opcional: puedes ajustar la posición
+            timeout: 3000 // Opcional: duración de la notificación en milisegundos
         })
         $('#modalVerModelo').modal('hide'); 
         cargarModelos();  
     })
     .catch(error => {
         console.error('Error al actualizar el modelo:', error);
-        alert(`Error: ${error.message}`); 
+        iziToast.error({
+            title: "ERROR",
+            message: "Error al actualizar el modelo",
+            position: "topCenter", // Opcional: puedes ajustar la posición
+            timeout: 3000 // Opcional: duración de la notificación en milisegundos
+        })
     });
 }
 
@@ -201,16 +205,22 @@ function eliminarUnModelo(id_mod) {
                     throw new Error(data.error || 'Error en la red');
                 });
             }
-            Swal.fire({
+            iziToast.warning({
                 title: "ELIMINACIÓN",
-                text: "Modelo Eliminado",
-                icon: 'error'
+                message: "Modelo Eliminado correctamente",
+                position: "topLeft", // Opcional: puedes ajustar la posición
+                timeout: 3000 // Opcional: duración de la notificación en milisegundos
             })
             cargarModelos();
         })
         .catch(error => {
             console.error('Error al eliminar el modelo:', error);
-            alert(error.message);  
+            iziToast.error({
+                title: "ERROR",
+                message: "Error al eliminar el modelo",
+                position: "topCenter", // Opcional: puedes ajustar la posición
+                timeout: 3000 // Opcional: duración de la notificación en milisegundos
+            })  
         });
     }
 }
