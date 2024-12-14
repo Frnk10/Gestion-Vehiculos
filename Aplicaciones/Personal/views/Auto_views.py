@@ -13,7 +13,7 @@ def ingresarAuto(request):
     if request.method == 'POST':
         color_car = request.POST.get('color_car')
         precio_car = request.POST.get('precio_car')
-        placa_com = request.POST.get('placa_com')
+        placa_car = request.POST.get('placa_car')
         fkid_mod = request.POST.get('fkid_mod')
         # Convertir fkid_mod a entero
         fkid_mod = int(fkid_mod)
@@ -23,7 +23,7 @@ def ingresarAuto(request):
         auto = Carro.objects.create(
             color_car=color_car,
             precio_car=precio_car,
-            placa_com=placa_com,
+            placa_car=placa_car,
             fkid_mod=modelo
         )
 

@@ -149,9 +149,17 @@ function cargarPropietarioEditar(propietarioId) {
             document.getElementById('email_pro_editar').value = data.email_pro;
             document.getElementById('telefono_pro_editar').value = data.telefono_pro;
             document.getElementById('fkid_ciu_editar').value = data.fkid_ciu;
-        }
+        }  
     })
-    .catch(error => console.error('Error al cargar datos para editar:', error));
+    .catch(error => {
+        console.error('Error al actualizar propietario:', error);
+        iziToast.error({
+            title: "ERROR",
+            message: "Error al actualizar el propietario",
+            position: "topCenter", // Opcional: puedes ajustar la posición
+            timeout: 3000 // Opcional: duración de la notificación en milisegundos
+        })
+    });
 }
 
 
