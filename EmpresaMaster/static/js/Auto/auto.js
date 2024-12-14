@@ -72,7 +72,7 @@ function agregarAuto() {
     const formData = new FormData();
     formData.append('color_car', color);
     formData.append('precio_car', precio);
-    formData.append('placa_com', placa);
+    formData.append('placa_car', placa);
     formData.append('fkid_mod', fkid_mod);
 
     // Obtener el token CSRF para la protección
@@ -122,7 +122,7 @@ function cargarAutoEditar(id_auto) {
             document.getElementById('verModelo').value = data.fkid_mod_editar;
             document.getElementById('verColor').value = data.color_car_editar;
             document.getElementById('verPrecio').value = data.precio_car_editar;
-            document.getElementById('verPlaca').value = data.placa_com_editar;
+            document.getElementById('verPlaca').value = data.placa_car_editar;
             $('#modalVerAuto').modal('show');
         }
     })

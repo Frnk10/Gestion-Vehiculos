@@ -5,11 +5,9 @@ from .views.Navegador_views import vistaNavegador,inicio
 from .views.Logeo_views import *
 from .views.Modelo_views import *
 from .views.Auto_views import *
-from .views.ciudad_views import *
+from .views.Ciudad_views import *
 from .views.Propietario_views import *
 #rom .views.Propietario_views import vistaPropietario,agregarPropietario,obtenerUnPropietario,editarUnPropietario,eliminarUnPropietario
-
-
 
 urlpatterns = [
     path('inicio/',inicio, name='inicio'),
@@ -51,8 +49,5 @@ urlpatterns = [
     # path('obtenerUnPropietario/<int:propietario_id>/',obtenerUnPropietario,name='obtenerUnPropietario'),
     # path('editarUnPropietario/<int:propietario_id>/',editarUnPropietario,name='editarUnPropietario'),
     # path('eliminarUnPropietario/<int:propietario_id>/',eliminarUnPropietario,name='eliminarUnPropietario'),
-
-   
-
 
 ]
