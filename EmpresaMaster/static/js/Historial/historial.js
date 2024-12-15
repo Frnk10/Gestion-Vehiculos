@@ -36,8 +36,14 @@ function vistaHistorial(){
             $('#tbl-historial').DataTable({
                 language: {
                     search: "Buscar:",
+                    paginate: {
+                        first: "Primero",
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        last: "Último"
+                    },
                 },
-                paging: false,          // Desactiva la paginación
+                paging: true,          // Desactiva la paginación
                 ordering: false,        // Desactiva las flechas de ordenamiento
                 info: false,           // Desactiva el texto de información de la tabla
                 scrollX: false,         // Activa el desplazamiento horizontal
