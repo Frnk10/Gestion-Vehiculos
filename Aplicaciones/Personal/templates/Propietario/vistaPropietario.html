@@ -56,7 +56,15 @@
             </div>
         </form>
     </div>
-
+    <script>
+        $(document).ready(function () {
+            $('.selectpicker').selectpicker({
+                noneSelectedText: 'Nada seleccionado',
+                noneResultsText: 'No hay resultados coincidentes {0}', // Mensaje al buscar sin resultados
+                liveSearchPlaceholder: 'Buscar...', // Texto de búsqueda
+            });
+        });
+    </script>
     <hr>
 
     <!-- Tabla de propietarios -->
@@ -98,6 +106,7 @@
     </div>
 </div>
 
+  
 
 <!-- Modal de edición -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">

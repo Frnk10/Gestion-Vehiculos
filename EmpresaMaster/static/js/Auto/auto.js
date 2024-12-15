@@ -13,6 +13,8 @@ function getCookie(name) {
     return cookieValue;
 }
 
+
+//MOSTRAR LISTA DE AUTOS
 function vistaAuto(){
     const contenedorTablas = document.getElementById('contenedor-tablas');
     contenedorTablas.innerHTML = '';
