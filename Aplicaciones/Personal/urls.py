@@ -43,9 +43,11 @@ urlpatterns = [
     path('vistaPropietario/',vistaPropietario,name='vistaPropietario'),
     path('ingresarPropietario/',ingresarPropietario,name='ingresarPropietario'),
     path('cargarPropietarioEditar/<int:propietario_id>/',cargarPropietarioEditar,name='cargarPropietarioEditar'),
-
+    path('editarPropietario/<int:propietario_id>/',editarPropietario,name='editarPropietario'),
+    path('eliminarPropietario/<int:propietario_id>/',eliminarPropietario,name='eliminarPropietario'),
     # aqui van para el crud de historial
     path('vistaHistorial/', vistaHistorial, name='vistaHistorial'),
     path('agregarHistorial/', agregarHistorial, name='agregarHistorial'),
-
+    path('eliminarHistorial/<int:historial_id>/',eliminarHistorial,name='eliminarHistorial'),
+    path('eliminarHistorial/<int:historial_id>/',eliminarHistorial,name="eliminarHistorial"),
 ]

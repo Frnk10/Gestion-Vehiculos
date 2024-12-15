@@ -5,42 +5,39 @@
     <div class="container mb-4">
         <form id="propietario-form">
             <div class="row align-items-center justify-content-center">
-                <div class="col-md-3">
+                <div class="col-md-1">
                     <label for="nombre_pro" class="form-label">Nombre</label>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <input type="text" class="form-control" id="nombre_pro" name="nombre_pro" required>
                 </div>
-            </div>
-            <div class="row align-items-center justify-content-center mt-3">
-                <div class="col-md-3">
+                <div class="col-md-1">
                     <label for="apellido_pro" class="form-label">Apellido</label>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <input type="text" class="form-control" id="apellido_pro" name="apellido_pro" required>
                 </div>
-            </div>
-            <div class="row align-items-center justify-content-center mt-3">
-                <div class="col-md-3">
+                <div class="col-md-1">
                     <label for="email_pro" class="form-label">Email</label>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <input type="email" class="form-control" id="email_pro" name="email_pro" required>
                 </div>
+
             </div>
+        
             <div class="row align-items-center justify-content-center mt-3">
-                <div class="col-md-3">
+                
+                <div class="col-md-1">
                     <label for="telefono_pro" class="form-label">Teléfono</label>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <input type="text" class="form-control" id="telefono_pro" name="telefono_pro" required>
                 </div>
-            </div>
-            <div class="row align-items-center justify-content-center mt-3">
-                <div class="col-md-3">
+                <div class="col-md-1">
                     <label for="fkid_ciu" class="form-label">Ciudad</label>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <select class="form-select" id="fkid_ciu" name="fkid_ciu" required>
                         <option value="" selected disabled>Seleccione una ciudad</option>
                         {% for ciudad in ciudades %}
@@ -48,12 +45,12 @@
                         {% endfor %}
                     </select>
                 </div>
-            </div>
-            <div class="row align-items-center justify-content-center mt-3">
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <button type="button" class="btn btn-success w-100" onclick="agregarPropietario()">Agregar Propietario</button>
                 </div>
+
             </div>
+
         </form>
     </div>
     <script>
@@ -69,8 +66,8 @@
 
     <!-- Tabla de propietarios -->
     <h3 class="mt-4 text-center">Propietarios Existentes</h3>
-    <div class="table-responsive d-flex justify-content-center">
-        <table id="tbl-propietario" class="table table-striped table-bordered" style="width: 80%;">
+    <div class="container align-items-center ">
+        <table id="tbl-propietario" class="table ">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -79,21 +76,29 @@
                     <th>Email</th>
                     <th>Teléfono</th>
                     <th>Ciudad</th>
-                    <th>Acciones</th>
+                    <th style="width: 100px;" >Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for propietario in propietarios %}
                 <tr>
-                    <td>{{ propietario.id }}</td>
-                    <td>{{ propietario.nombre_pro }}</td>
-                    <td>{{ propietario.apellido_pro }}</td>
-                    <td>{{ propietario.email_pro }}</td>
-                    <td>{{ propietario.telefono_pro }}</td>
-                    <td>{{ propietario.fkid_ciu.nombre_ciu }}</td>
-                    <td class="text-center">
-                        <button onclick="cargarPropietarioEditar({{ propietario.id }})" data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-warning btn-sm mx-1"><i class="fas fa-pen"></i></button>
-                        <button onclick="eliminarPropietario({{ propietario.id }})" class="btn btn-danger btn-sm mx-1"><i class="fas fa-trash"></i></button>
+                    <td style="width: 100px;">{{ propietario.id }}</td>
+                    <td style="width: 100px;">{{ propietario.nombre_pro }}</td>
+                    <td style="width: 100px;">{{ propietario.apellido_pro }}</td>
+                    <td style="width: 100px;">{{ propietario.email_pro }}</td>
+                    <td style="width: 100px;">{{ propietario.telefono_pro }}</td>
+                    <td style="width: 100px;">{{ propietario.fkid_ciu.nombre_ciu }}</td>
+                    <td style="width: 100px;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-warning rounded" style="width: 50px;" onclick="cargarPropietarioEditar({{ propietario.id }})" data-bs-toggle="modal" data-bs-target="#editModal" ><i class="fas fa-pen"></i></button>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-danger rounded"style="width: 50px;" onclick="eliminarPropietario({{ propietario.id }})" ><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                       
+                        
                     </td>
                 </tr>
                 {% empty %}
@@ -119,31 +124,32 @@
             <div class="modal-body">
                 <form id="editar-form">
                     <div class="mb-3">
+                        <input type="hidden" name="propietario_id_editar" id="propietario_id_editar" value="">
                         <label for="nombre_pro_editar" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="nombre_pro_editar" name="nombre_pro">
+                        <input type="text" class="form-control" id="nombre_pro_editar" name="nombre_pro_editar">
                     </div>
                     <div class="mb-3">
                         <label for="apellido_pro_editar" class="form-label">Apellido</label>
-                        <input type="text" class="form-control" id="apellido_pro_editar" name="apellido_pro">
+                        <input type="text" class="form-control" id="apellido_pro_editar" name="apellido_pro_editar">
                     </div>
                     <div class="mb-3">
                         <label for="email_pro_editar" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email_pro_editar" name="email_pro">
+                        <input type="email" class="form-control" id="email_pro_editar" name="email_pro_editar">
                     </div>
                     <div class="mb-3">
                         <label for="telefono_pro_editar" class="form-label">Teléfono</label>
-                        <input type="text" class="form-control" id="telefono_pro_editar" name="telefono_pro">
+                        <input type="text" class="form-control" id="telefono_pro_editar" name="telefono_pro_editar">
                     </div>
                     <div class="mb-3">
                         <label for="fkid_ciu_editar" class="form-label">Ciudad</label>
-                        <select class="form-select" id="fkid_ciu_editar" name="fkid_ciu" required>
+                        <select class="form-select" id="fkid_ciu_editar" name="fkid_ciu_editar" required>
                             <option value="" disabled>Seleccione una ciudad</option>
                             {% for ciudad in ciudades %}
                                 <option value="{{ ciudad.id }}">{{ ciudad.nombre_ciu }}</option>
                             {% endfor %}
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-success">Guardar cambios</button>
+                    <button type="button" class="btn btn-success" onclick="editarPropietario()" >Guardar cambios</button>
                 </form>
             </div>
         </div>

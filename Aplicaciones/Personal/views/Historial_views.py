@@ -1,3 +1,4 @@
+import json
 from django.db import IntegrityError
 from django.shortcuts import render,get_object_or_404
 from django.http import JsonResponse
@@ -32,3 +33,21 @@ def agregarHistorial(request):
         )
         return JsonResponse({'message': 'Historial agregado con éxito', 'status': 'success'})
     return JsonResponse({'message': 'Método no permitido', 'status': 'error'})
+
+
+@csrf_exempt
+def eliminarHistorial(request, historial_id):
+    if request.method == 'POST':
+        try:
+            body = json.loads(request.body)
+            if body.get('_method') == 'DELETE':  # Asegurarse de que es una eliminación lógica
+                historial = Historial.objects.get(id=historial_id)
+                historial.delete()
+                return JsonResponse({'success': True, 'message': 'Historial eliminado correctamente'})
+            else:
+                return JsonResponse({'success': False, 'message': 'Método no permitido'}, status=400)
+        except Historial.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Historial no encontrado'}, status=404)
+        except json.JSONDecodeError:
+            return JsonResponse({'success': False, 'message': 'Error en los datos enviados'}, status=400)
+    return JsonResponse({'success': False, 'message': 'Método no permitido'}, status=405)

@@ -144,6 +144,7 @@ function cargarPropietarioEditar(propietarioId) {
     .then(response => response.json())
     .then(data => {
         if (data.status === 'success') {
+            document.getElementById('propietario_id_editar').value=data.id
             document.getElementById('nombre_pro_editar').value = data.nombre_pro;
             document.getElementById('apellido_pro_editar').value = data.apellido_pro;
             document.getElementById('email_pro_editar').value = data.email_pro;
@@ -163,55 +164,69 @@ function cargarPropietarioEditar(propietarioId) {
 }
 
 
-function editarCiudad(id) {
+function editarPropietario() {
 
-    const nuevoNombrePro = document.getElementById('nombre_pro').value.trim();
-    const nuevoApellidoPro = document.getElementById('apellido_pro').value.trim();
-    const nuevoEmailPro = document.getElementById('email_pro').value.trim();
-    const nuevoTelefonoPro = document.getElementById('telefono_pro').value.trim();
-    const nuevoFkidCiu = document.getElementById('fkid_ciu').value;
-    const nuevoNombre = prompt('Ingrese el nuevo nombre de la ciudad:');
-    if (!nuevoNombre) {
-        iziToast.warning({
-            title: "AVISO",
-            message: "Ingrese el nuevo nombre de la ciudad", // Mensaje de error
-            position: "topCenter", // Opcional: puedes ajustar la posición
-            timeout: 3000 // Opcional: duración de la notificación en milisegundos
-        })
-        return;
-    }
-
-    const formData = new FormData();
-    formData.append('nombre_ciu', nuevoNombre);
-
-    const csrfToken = getCookie('csrftoken');
-
-    fetch(`/editarCiudad/${id}/`, {
+    const formData = new FormData(document.getElementById('editar-form'));
+    id=formData.get('propietario_id_editar');
+    fetch(`/editarPropietario/${id}/`, {
         method: 'POST',
         body: formData,
         headers: {
-            'X-CSRFToken': csrfToken, // Agregar CSRF token
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        iziToast.success({
-            title: "CONFIRMACIÓN",
-            message: "Propietario editado correctamente",
-            position: "topLeft", // Opcional: puedes ajustar la posición
-            timeout: 3000 // Opcional: duración de la notificación en milisegundos
-        })
-        if (data.success) {
-            vistaCiudad(); // Refrescar lista
+            'X-CSRFToken': getCookie('csrftoken'), // Asegúrate de incluir el token CSRF
         }
     })
-    .catch(error => {
-        console.error('Error al actualizar propietario:', error);
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                
+                const modalPropietario=bootstrap.Modal.getInstance(document.getElementById('editModal'));
+                if(modalPropietario){
+                    modalPropietario.hide();
+                }
+
+                vistaPropietario();
+            } else {
+                alert(`Error: ${data.message}`);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+
+}
+
+function eliminarPropietario(id){
+    if (!confirm('¿Estás seguro de que deseas eliminar este propietario?')) return;
+    const csrfToken = getCookie('csrftoken');
+
+    fetch(`/eliminarPropietario/${id}/`, {
+        method: 'POST',
+        body: JSON.stringify({ _method: 'DELETE' }), // Elimina el cuerpo JSON
+        headers: {
+            'X-CSRFToken': csrfToken,
+            'Content-Type': 'application/json', // Importante para que el servidor entienda que es JSON
+        },
+    })
+    .then(response=>response.json())
+    .then(data=>{
+        
+            iziToast.warning({
+                title: "ELIMINACIÓN",
+                message: "Propietario eliminado correctamente",
+                position: "topLeft", 
+                timeout: 3000 
+            })
+        
+        vistaPropietario();
+        
+        
+    })
+    .catch(error=>{
+        console.error('Error al eliminar el Propietario', error);
         iziToast.error({
             title: "ERROR",
-            message: "Error al actualizar propietario",
+            message: "Error al eliminar el propietario",
             position: "topCenter", // Opcional: puedes ajustar la posición
             timeout: 3000 // Opcional: duración de la notificación en milisegundos
         })
-    });
+    })
 }
