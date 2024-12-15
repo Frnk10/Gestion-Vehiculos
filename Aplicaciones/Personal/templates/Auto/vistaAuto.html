@@ -81,7 +81,7 @@
                             </div>
                             <div class="form-group">
                                 <label ><strong>ID MODELO:</strong></label>
-                                <select class="form-select" id="fkid_mod" name="fkid_mod" required>
+                                <select class="form-select js-example-basic-single" id="fkid_mod" name="fkid_mod" required>
                                     <option value="" selected disabled>Seleccione un modelo</option>
                                     {% for modelo in modelos %}
                                         <option value="{{ modelo.id }}">{{ modelo.nombre_mod }}</option>

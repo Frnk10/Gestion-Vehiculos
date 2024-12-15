@@ -20,8 +20,6 @@
     <!--CSS REGISTRO-->
     <link rel="stylesheet" href="{% static 'css/VistaNavegador/registro.css' %}">
 
-    <!-- BOOTSTRAP ICONS -->
-    <link rel="stylesheet" href="{% static 'plantilla/bootstrap-icons/font/bootstrap-icons.min.css' %}">
     <!--Importando jQuery-->
     <script src="{% static 'plantilla/js/core/jquery-3.7.1.min.js' %}"></script>
 
@@ -50,6 +48,9 @@
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="{% static 'plantilla/css/bootstrap.min.css' %}" />
+
+    <!-- IZITOAST CSS -->
+    <link rel="stylesheet" href="{% static 'plantilla/css/iziToast.min.css' %}" />
 
 </head>
 <body>
@@ -113,7 +114,6 @@
     <script src="{% static 'js/Navegador/modalLogeo.js' %}"></script>
     <!--JS REGISTRO-->
     <script src="{% static 'js/Navegador/registro.js' %}"></script>
-    <script src="{% static 'js/Navegador/validacion.js' %}"></script>
 
     <!-- Bootstrap -->
     <script src="{% static 'plantilla/js/core/popper.min.js' %}"></script>
@@ -124,14 +124,10 @@
 
     <!--SWEETALERT-->
     <!-- <script src="{% static 'plantilla/js/plugin/sweetalert/sweetalert.js' %}"></script> -->
-    
-    <!-- Importando iziToast desde CDN -->
-    <!-- Agregar iziToast CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
-    <!-- Agregar iziToast JS -->
-    <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
 
-    
+    <!-- IZITOAST JS -->
+    <script src="{% static 'plantilla/js/plugin/iziToast/iziToast.min.js' %}"></script>
+
     <!-- MOSTRAR MENSAJES -->
     {% if messages %}
         {% for mensaje in messages %}
