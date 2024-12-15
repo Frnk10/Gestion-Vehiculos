@@ -104,3 +104,46 @@ function agregarHistorial() {
     });
 }
 
+
+function eliminarHistorial(id) {
+    if (!confirm('¿Estás seguro de que deseas eliminar este historial?')) return;
+
+    const csrfToken = getCookie('csrftoken'); // Asegúrate de tener esta función definida para obtener el token CSRF.
+
+    fetch(`../eliminarHistorial/${id}/`, {
+        method: 'POST',
+        body: JSON.stringify({ _method: 'DELETE' }),
+        headers: {
+            'X-CSRFToken': csrfToken,
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            iziToast.warning({
+                title: "ELIMINACIÓN",
+                message: data.message,
+                position: "topLeft",
+                timeout: 3000,
+            });
+            vistaHistorial(); // Función para actualizar la lista de historiales
+        } else {
+            iziToast.error({
+                title: "ERROR",
+                message: data.message,
+                position: "topCenter",
+                timeout: 3000,
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error al eliminar el historial:', error);
+        iziToast.error({
+            title: "ERROR",
+            message: "Error al eliminar el historial",
+            position: "topCenter",
+            timeout: 3000,
+        });
+    });
+}

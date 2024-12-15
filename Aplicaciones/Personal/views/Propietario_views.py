@@ -3,6 +3,7 @@ from django.shortcuts import render,get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from ..models import Ciudad, Propietario
+from django.views.decorators.csrf import csrf_protect
 
 def vistaPropietario(request):
     propietariosbdd = Propietario.objects.all()
@@ -37,6 +38,7 @@ def cargarPropietarioEditar(request, propietario_id):
     # Devolver los datos en formato JSON
     return JsonResponse({
         'status': 'success',
+        'id':propietario.id,
         'nombre_pro': propietario.nombre_pro,
         'apellido_pro': propietario.apellido_pro,
         'email_pro': propietario.email_pro,
@@ -45,38 +47,38 @@ def cargarPropietarioEditar(request, propietario_id):
     })
 
 
-def editar_propietario(request, propietario_id):
+def editarPropietario(request, propietario_id):
     if request.method == 'POST':
-        # Obtén los datos del formulario
-        nombre = request.POST.get('nombre_pro_editar')
-        apellido = request.POST.get('apellido_pro__editar')
-        email = request.POST.get('email_pro_editar')
-        telefono = request.POST.get('telefono_pro_editar')
-        fkid_ciu = request.POST.get('fkid_ciu')
-
-        # Encuentra el propietario y actualízalo
-        propietario = get_object_or_404(Propietario, id=propietario_id)
-        propietario.nombre_pro = nombre
-        propietario.apellido_pro = apellido
-        propietario.email_pro = email
-        propietario.telefono_pro = telefono
-        propietario.fkid_ciu = fkid_ciu  
-
-        # Guarda los cambios en la base de datos
-        propietario.save()
-
-        # Devuelve una respuesta JSON de éxito
-        return JsonResponse({'status': 'success', 'message': 'Propietario actualizado exitosamente'})
-
-    return JsonResponse({'status': 'error', 'message': 'No se pudo actualizar el propietario'})
-
-
-def eliminar_propietario(request, propietario_id):
-    if request.method == 'DELETE':
         try:
-            propietario = Propietario.objects.get(id=propietario_id)
-            propietario.delete()
-            return JsonResponse({'message': 'Propietario eliminado con éxito', 'status': 'success'})
+            propietario = get_object_or_404(Propietario, id=propietario_id)
+            propietario.nombre_pro = request.POST.get('nombre_pro_editar')
+            propietario.apellido_pro = request.POST.get('apellido_pro_editar')
+            propietario.email_pro = request.POST.get('email_pro_editar')
+            propietario.telefono_pro = request.POST.get('telefono_pro_editar')
+            ciudad_id = request.POST.get('fkid_ciu_editar')
+            if ciudad_id:
+                propietario.fkid_ciu = get_object_or_404(Ciudad, id=ciudad_id)
+
+            propietario.save()
+
+            return JsonResponse({'success': True, 'message': 'Propietario actualizado correctamente'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)})
+    return JsonResponse({'success': False, 'message': 'Método no permitido'}, status=405)
+
+@csrf_protect
+def eliminarPropietario(request, propietario_id):
+    if request.method == 'POST':
+        try:
+            # Verifica si `_method` es DELETE
+            import json
+            body = json.loads(request.body)
+            if body.get('_method') == 'DELETE':
+                propietario = Propietario.objects.get(id=propietario_id)
+                propietario.delete()
+                return JsonResponse({'message': 'Propietario eliminado con éxito', 'status': 'success'})
         except Propietario.DoesNotExist:
             return JsonResponse({'message': 'Propietario no encontrado', 'status': 'error'})
+        except json.JSONDecodeError:
+            return JsonResponse({'message': 'Cuerpo JSON inválido', 'status': 'error'})
     return JsonResponse({'message': 'Método no permitido', 'status': 'error'})
