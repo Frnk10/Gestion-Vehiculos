@@ -37,8 +37,14 @@ function cargarModelos() {
             $('#tbl-modelo').DataTable({
                 language: {
                     search: "Buscar:",
+                    paginate: {
+                        first: "Primero",
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        last: "Último"
+                    },
                 },
-                paging: false,          // Desactiva la paginación
+                paging: true,          // Desactiva la paginación
                 ordering: false,        // Desactiva las flechas de ordenamiento
                 info: false,           // Desactiva el texto de información de la tabla
                 scrollX: false,         // Activa el desplazamiento horizontal
@@ -51,28 +57,34 @@ function cargarModelos() {
 }
 
 function guardarDatosModelo() {
+    // Obtener los valores de los campos del formulario
+    const modelo = document.getElementById('modelo').value.trim();
+    const fabricacion = document.getElementById('fabricacion').value.trim();
     const formularioElement = document.getElementById('formAgregarModelo');
-    const inputs = formularioElement.querySelectorAll('input, textarea'); // Seleccionar inputs y textareas
-    let allFieldsValid = true; // Variable para verificar si todos los campos son válidos
+    // Validar que los campos no estén vacíos
+    if (!modelo || !fabricacion) {
+        iziToast.info({
+            title: "AVISO",
+            message: "Por favor, complete todos los campos.",
+            position: "topCenter",
+            timeout: 3000
+        });
+        return;
+    }
+    // Expresión regular para verificar solo números
+    const regex = /^\d+$/;
 
-   // Verifica si todos los campos están llenos
-   inputs.forEach(input => {
-    if (!input.value) {
-        allFieldsValid = false; // Marca como inválido si hay un campo vacío
-        input.classList.add('is-invalid'); // Agrega clase para mostrar error
-    } else {
-        input.classList.remove('is-invalid'); // Remueve la clase de error si el campo es válido
-        }
-    });
-
-    // Si hay campos vacíos, no envíes el formulario
-    if (!allFieldsValid) {
-        alert("Todos los campos son obligatorios."); // Mensaje de error
-        return; // Detener la ejecución de la función
+    if (!regex.test(fabricacion)) {
+        iziToast.info({
+            title: "AVISO",
+            message: "Por favor, ingrese solo números.",
+            position: "topCenter",
+            timeout: 3000
+        });
     }
 
     const formulario = new FormData(formularioElement); // Crear FormData después de verificar los campos
-
+    
     fetch('/agregarModelo/', {  
         method: 'POST',
         body: formulario,
@@ -90,11 +102,11 @@ function guardarDatosModelo() {
     })
     .then(data => {
         console.log('Modelo agregado:', data);
-        // Muestra mensaje de éxito
         $('#modalAgregarModelo').modal('hide');
+        // Muestra mensaje de éxito
         iziToast.success({
             title: "CONFIRMACIÓN",
-            message: "Modelo agregado correctamente",
+            message: data.message,
             position: "topLeft", // Opcional: puedes ajustar la posición
             timeout: 3000 // Opcional: duración de la notificación en milisegundos
         })
@@ -102,12 +114,13 @@ function guardarDatosModelo() {
     })
     .catch(error => {
         console.error('Error al agregar el modelo:', error);
-        // Manejo de errores específico
-        if (error.message.includes('El modelo ya ha sido registrado')) {
-            alert('El modelo ingresado ya está registrado.');
-        } else {
-            alert('Ocurrió un error al agregar el modelo. Intenta nuevamente.');
-        }
+        // Muestra mensaje de advertencia
+        iziToast.warning({
+            title: "AVISO",
+            message: "El modelo ya existe o Hay un " + error.message,
+            position: "topCenter", // Opcional: puedes ajustar la posición
+            timeout: 3000 // Opcional: duración de la notificación en milisegundos
+        })
     });
 }
 
@@ -132,27 +145,30 @@ function abrirmodalVerModelo(id_mod) {
 
 function guardarDatosEditadosModelo() {
     const id_mod = document.getElementById('verId').value; 
+    const modelo = document.getElementById('verModelo').value.trim();
+    const fabricacion = document.getElementById('verFabricacion').value.trim();
     const formularioElement = document.getElementById('formEditarModelo');
-    const inputs = formularioElement.querySelectorAll('input, textarea'); // Seleccionar inputs y textareas
-    let allFieldsValid = true;
-    inputs.forEach(input => {
-        if (!input.value && input.type !== "select" && input.type !== "file") {
-            allFieldsValid = false; // Marca como inválido si hay un campo vacío
-            input.classList.add('is-invalid'); // Agrega clase para mostrar error
-        } else {
-            input.classList.remove('is-invalid'); // Remueve la clase de error si el campo es válido
-        }
-    });
 
-    // Si hay campos vacíos, no envíes el formulario
-    if (!allFieldsValid) {
+    // Validar que los campos no estén vacíos
+    if (!modelo || !fabricacion) {
         iziToast.info({
             title: "AVISO",
-            message: "Algunos campos son necesarios", // Mensaje de error
-            position: "topCenter", // Opcional: puedes ajustar la posición
-            timeout: 3000 // Opcional: duración de la notificación en milisegundos
-        })
-        return; // Detener la ejecución de la función
+            message: "Por favor, complete todos los campos.",
+            position: "topCenter",
+            timeout: 3000
+        });
+        return;
+    }
+    // Expresión regular para verificar solo números
+    const regex = /^\d+$/;
+    if (!regex.test(fabricacion)) {
+        iziToast.info({
+            title: "AVISO",
+            message: "El año de fabricación debe contener solo números",
+            position: "topCenter",
+            timeout: 3000
+        });
+        return; // Detener la ejecución si el campo no es válido
     }
 
     const formulario = new FormData(formularioElement);
@@ -166,24 +182,29 @@ function guardarDatosEditadosModelo() {
     })
     .then(response => {
         if (!response.ok) {
-            return response.json().then(errorData => {
-                throw new Error(errorData.error || 'Error desconocido');
+            return response.json().then(data  => {
+                throw new Error(data .error || 'Error desconocido');
             });
         }
+        return response.json();
+    })
+    .then(data =>{
+        $('#modalVerModelo').modal('hide'); 
+        // Muestra mensaje de advertencia
         iziToast.success({
             title: "CONFIRMACIÓN",
-            message: "Modelo editado correctamente",
+            message: data.message,
             position: "topLeft", // Opcional: puedes ajustar la posición
             timeout: 3000 // Opcional: duración de la notificación en milisegundos
         })
-        $('#modalVerModelo').modal('hide'); 
-        cargarModelos();  
+        cargarModelos();
     })
     .catch(error => {
         console.error('Error al actualizar el modelo:', error);
-        iziToast.error({
-            title: "ERROR",
-            message: "Error al actualizar el modelo",
+        // Muestra mensaje de advertencia
+        iziToast.warning({
+            title: "AVISO",
+            message: error.message,
             position: "topCenter", // Opcional: puedes ajustar la posición
             timeout: 3000 // Opcional: duración de la notificación en milisegundos
         })

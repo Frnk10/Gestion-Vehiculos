@@ -11,23 +11,27 @@ def vistaAuto(request):
 
 def ingresarAuto(request):
     if request.method == 'POST':
-        color_car = request.POST.get('color_car')
+        color_car = request.POST.get('color_car').upper()
         precio_car = request.POST.get('precio_car')
-        placa_car = request.POST.get('placa_car')
+        placa_car = request.POST.get('placa_car').upper()
         fkid_mod = request.POST.get('fkid_mod')
+        # Verificar si la placa ya existe en la base de datos
+        if Carro.objects.filter(placa_car=placa_car).exists():
+            return JsonResponse({'error': 'La placa ya ha sido registrada.'}, status=400)
+        
         # Convertir fkid_mod a entero
         fkid_mod = int(fkid_mod)
         # Obtener la instancia del modelo relacionado
         modelo = Modelo.objects.get(pk=fkid_mod)
         # Crear el auto
-        auto = Carro.objects.create(
+        auto = Carro(
             color_car=color_car,
             precio_car=precio_car,
             placa_car=placa_car,
             fkid_mod=modelo
         )
-
-        return JsonResponse({'message': 'Automóvil agregado con éxito', 'status': 'success'})
+        auto.save()
+        return JsonResponse({'message': 'Automóvil agregado con éxito'}, status=201)
     return JsonResponse({'message': 'Método no permitido', 'status': 'error'})
 
 
@@ -49,9 +53,9 @@ def cargarAutoEditar(request,id_auto):
 def editar_auto(request, id_auto):
     if request.method == 'POST':
         # Obtén los datos del formulario
-        color_car = request.POST.get('color')
+        color_car = request.POST.get('color').upper()
         precio_car = request.POST.get('precio')
-        placa_car = request.POST.get('placa')
+        placa_car = request.POST.get('placa').upper()
         fkid_mod = request.POST.get('verModelo')
         # Convertir fkid_mod a entero
         fkid_mod = int(fkid_mod)
@@ -59,6 +63,9 @@ def editar_auto(request, id_auto):
         modelo = get_object_or_404(Modelo, pk=fkid_mod)
         # Encuentra el propietario y actualízalo
         auto = get_object_or_404(Carro, id=id_auto)
+        # Verificar si el nuevo modelo ya está registrado, excepto si es el mismo nombre actual
+        if Carro.objects.filter(placa_car=placa_car).exists() and auto.placa_car != placa_car:
+            return JsonResponse({'error': 'La placa ya ha sido registrada.'}, status=400)
         auto.color_car = color_car
         auto.precio_car = precio_car
         auto.placa_car = placa_car

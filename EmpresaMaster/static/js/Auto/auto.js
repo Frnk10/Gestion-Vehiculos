@@ -36,8 +36,14 @@ function vistaAuto(){
             $('#tbl-auto').DataTable({
                 language: {
                     search: "Buscar:",
+                    paginate: {
+                        first: "Primero",
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        last: "Último"
+                    },
                 },
-                paging: false,          // Desactiva la paginación
+                paging: true,          // Desactiva la paginación
                 ordering: false,        // Desactiva las flechas de ordenamiento
                 info: false,           // Desactiva el texto de información de la tabla
                 scrollX: false,         // Activa el desplazamiento horizontal
@@ -62,10 +68,31 @@ function agregarAuto() {
         iziToast.info({
             title: "AVISO",
             message: "Por favor, complete todos los campos.",
-            position: "topCenter", // Opcional: puedes ajustar la posición
-            timeout: 3000 // Opcional: duración de la notificación en milisegundos
-        })
-        return; // Detener la ejecución si algún campo está vacío
+            position: "topCenter",
+            timeout: 3000
+        });
+        return;
+    }
+    // Validar que 'color' solo contenga letras
+    const colorRegex = /^[a-zA-Z\s]+$/; // Expresión regular para solo letras y espacios
+    if (!colorRegex.test(color)) {
+        iziToast.info({
+            title: "AVISO",
+            message: "El color solo debe contener letras.",
+            position: "topCenter",
+            timeout: 3000
+        });
+        return;
+    }
+    // Validar que 'precio' sea un número decimal
+    if (isNaN(parseFloat(precio)) || !isFinite(precio)) {
+        iziToast.info({
+            title: "AVISO",
+            message: "El precio debe ser un número.",
+            position: "topCenter",
+            timeout: 3000
+        });
+        return;
     }
 
     // Crear un objeto FormData para enviar los datos al backend
@@ -79,34 +106,44 @@ function agregarAuto() {
     const csrfToken = getCookie('csrftoken'); 
 
     // Enviar la solicitud POST usando Fetch API
-    fetch('../ingresarAuto/', {  // Asegúrate de que esta URL sea la correcta
+    fetch('../ingresarAuto/', {  
         method: 'POST',
         body: formData,
         headers: {
-            'X-CSRFToken': csrfToken // Agregar el CSRF token a los encabezados
+            'X-CSRFToken': csrfToken
         },
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(text => {
+                throw new Error(text);
+            });
+        }
+        return response.json();  
+    })
     .then(data => {
+        console.log('Auto agregado:', data);
+        $('#modalAgregarAuto').modal('hide');
         iziToast.success({
             title: "CONFIRMACIÓN",
-            message: "Automóvil agregado correctamente",
-            position: "topLeft", // Opcional: puedes ajustar la posición
-            timeout: 3000 // Opcional: duración de la notificación en milisegundos
-        })
-        $('#modalAgregarAuto').modal('hide');
+            message: data.message,
+            position: "topLeft",
+            timeout: 3000
+        });
         vistaAuto(); // Refrescar la lista de propietarios
     })
-    .catch(
-        error => console.error('Error al agregar automóvil:', error)
-    );
-    iziToast.error({
-        title: "ERROR",
-        message: "Error al agregar automóvil",
-        position: "topCenter", // Opcional: puedes ajustar la posición
-        timeout: 3000 // Opcional: duración de la notificación en milisegundos
-    })
+    .catch(error => {
+        console.error('Error al agregar automóvil:', error);
+        // Ajusta el mensaje de acuerdo al error específico del backend
+        iziToast.warning({
+            title: "AVISO",
+            message: error.message,
+            position: "topCenter",
+            timeout: 3000
+        });
+    });
 }
+
 
 function cargarAutoEditar(id_auto) {
     fetch(`../cargarAutoEditar/${id_auto}/`, {
@@ -150,8 +187,35 @@ function editarAuto() {
             message: "Algunos campos son necesarios", // Mensaje de error
             position: "topCenter", // Opcional: puedes ajustar la posición
             timeout: 3000 // Opcional: duración de la notificación en milisegundos
-        })
+        });
         return; // Detener la ejecución de la función
+    }
+
+    // Obtener los valores del formulario
+    const color = document.getElementById('verColor').value.trim();
+    const precio = document.getElementById('verPrecio').value.trim();
+    const placa = document.getElementById('verPlaca').value.trim();
+    const fkid_mod = document.getElementById('verModelo').value;
+    // Validar que 'color' solo contenga letras
+    const colorRegex = /^[a-zA-Z\s]+$/; // Expresión regular para solo letras y espacios
+    if (!colorRegex.test(color)) {
+        iziToast.info({
+            title: "AVISO",
+            message: "El color solo debe contener letras.",
+            position: "topCenter",
+            timeout: 3000
+        });
+        return;
+    }
+    // Validar que 'precio' sea un número decimal
+    if (isNaN(parseFloat(precio)) || !isFinite(precio)) {
+        iziToast.info({
+            title: "AVISO",
+            message: "El precio debe ser un número.",
+            position: "topCenter",
+            timeout: 3000
+        });
+        return;
     }
 
     const formulario = new FormData(formularioElement);
@@ -165,29 +229,33 @@ function editarAuto() {
     })
     .then(response => {
         if (!response.ok) {
-            return response.json().then(errorData => {
-                throw new Error(errorData.error || 'Error desconocido');
+            return response.json().then(data => {
+                throw new Error(data.error || 'Error en la red');
             });
         }
+        return response.json();
+    })
+    .then(data => {
+        $('#modalVerAuto').modal('hide');
         iziToast.success({
             title: "CONFIRMACIÓN",
-            message: "Automóvil editado correctamente",
+            message: data.message,
             position: "topLeft", // Opcional: puedes ajustar la posición
             timeout: 3000 // Opcional: duración de la notificación en milisegundos
-        })
-        $('#modalVerAuto').modal('hide');
-        vistaAuto(); 
+        });
+        vistaAuto(); // Refrescar la lista de propietarios
     })
     .catch(error => {
         console.error('Error al actualizar el automóvil:', error);
-        iziToast.error({
-            title: "ERROR",
-            message: "Error al actualizar el automóvil",
+        iziToast.warning({
+            title: "AVISO",
+            message: error.message,
             position: "topCenter", // Opcional: puedes ajustar la posición
             timeout: 3000 // Opcional: duración de la notificación en milisegundos
-        })
+        });
     });
 }
+
 
 function eliminarAuto(id_auto) {
     const confirmacion = confirm('¿Estás seguro de que deseas eliminar este auto?');

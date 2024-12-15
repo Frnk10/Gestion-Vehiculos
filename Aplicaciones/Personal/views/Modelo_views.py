@@ -16,14 +16,14 @@ def vistaModelo(request):
 def agregarModelo(request):
     if request.method == 'POST':
         try:
-            modelo = request.POST.get('modelo')
+            nuevo_nombre = request.POST.get('modelo').upper()
 
             # Verificar si el Modelo ya existe en la base de datos
-            if Modelo.objects.filter(nombre_mod=modelo).exists():
-                return JsonResponse({'error': 'El Modelo ya ha sido registrado.'}, status=400)
+            if Modelo.objects.filter(nombre_mod=nuevo_nombre).exists():
+                return JsonResponse({'message': 'El Modelo ya ha sido registrado.'}, status=400)
 
             modelo = Modelo(
-                nombre_mod=request.POST.get('modelo'),
+                nombre_mod=nuevo_nombre,
                 fabricacion_mod=request.POST.get('fabricacion')
             )
             modelo.save()
@@ -50,16 +50,16 @@ def editarUnModelo(request, id_mod):
     if request.method == 'POST':
         modelo = get_object_or_404(Modelo, id=id_mod)
 
-        try:
-            # Actualiza los datos de la empresa
-            modelo.nombre_mod = request.POST.get('modelo')
+        try:            
+            # Verificar si el Modelo ya existe en la base de datos
+            nuevo_nombre= request.POST.get('modelo').upper()
+            # Verificar si el nuevo modelo ya está registrado, excepto si es el mismo nombre actual
+            if Modelo.objects.filter(nombre_mod=nuevo_nombre).exists() and modelo.nombre_mod != nuevo_nombre:
+                return JsonResponse({'error': 'El Modelo ya ha sido registrado.'}, status=400)
+            modelo.nombre_mod = nuevo_nombre
             modelo.fabricacion_mod = request.POST.get('fabricacion')
-
             modelo.save()
-
             return JsonResponse({'message': 'Modelo actualizado exitosamente.'}, status=200)
-        
-
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
 
