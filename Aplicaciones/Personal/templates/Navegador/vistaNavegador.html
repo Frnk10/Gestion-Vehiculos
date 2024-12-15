@@ -8,7 +8,9 @@
 {% block header %}
     <nav class="navbar bg-dark">
         <div class="container-fluid d-flex justify-content-between align-items-center">
-            <a class="navbar-brand text-white" href="/">LOGO</a>
+            <a class="navbar-brand text-white" href="/">
+                <img src="{% static 'img/logo.jpeg' %}" alt="logoTipo" width="50px">
+            </a>
             <h3 class="text-white text-center mx-auto">Sistema para el listado de Carros </h3>
         </div>
     </nav>
@@ -34,6 +36,8 @@
     <script src="{% static 'js/Modelo/modelo.js' %}"></script>
 
     <script src="{% static 'js/Auto/auto.js' %}"></script>
+
+    <script src="{% static 'js/Historial/historial.js' %}"></script>
   
     <div class="container menu-container mt-5 py-4">
         <div class="row text-center">
@@ -41,32 +45,31 @@
                 <div class="col">
                     <button class="btn btn-lg btn-primary mb-3" type="button" onclick="vistaCiudad()"><i class="fas fa-building"> Ciudades</i></button> 
                 </div>
-
                 <!-- FIJARSE COMO ESTA EL PRIMERO -->
                 <div class="col">
                     <button class="btn btn-lg btn-primary mb-3" type="button" onclick="cargarModelos();"><i class="fas fa-building"> Modelos</i></button> 
                 </div>
                 <div class="col">
-                    <button class="btn btn-lg btn-primary mb-3" type="button" onclick="vistaAuto();"><i class="fas fa-car">Carros</i></button>
+                    <button class="btn btn-lg btn-primary mb-3" type="button" onclick="vistaAuto();"><i class="fas fa-car"> Automóviles</i></button>
                 </div>
                 <div class="col">
-                     <button class="btn btn-lg btn-primary mb-3" type="button" onclick="vistaPropietario();"><i class="fas fa-user-tie text text-small">Propietario</i></button>
+                     <button class="btn btn-lg btn-primary mb-3" type="button" onclick="vistaPropietario();"><i class="fas fa-user-tie text text-small"> Propietarios</i></button>
                 </div>
+                <div class="col">
+                    <button class="btn btn-lg btn-warning mb-3" type="button" onclick="vistaHistorial();"><i class="fas fa-history text text-small"> Historial</i></button>
+               </div>
                 <div class="col">
                     <a class="btn btn-lg btn-danger mb-3" href="{% url 'cerrarSesion' %}" type="button">
                         <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Salir
                     </a>
                 </div>
             {% endif %}
-
         </div>
     </div>
 
     <div class="container" id="contenedor-tablas">
         <!-- aqui va la tabla  -->
+        {% include 'Historial/vistaHistorial.html' %}
     </div>
-    
-
-
 
 {% endblock %}

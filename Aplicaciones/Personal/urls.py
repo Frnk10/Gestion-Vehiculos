@@ -7,6 +7,7 @@ from .views.Modelo_views import *
 from .views.Auto_views import *
 from .views.Ciudad_views import *
 from .views.Propietario_views import *
+from .views.Historial_views import *
 #rom .views.Propietario_views import vistaPropietario,agregarPropietario,obtenerUnPropietario,editarUnPropietario,eliminarUnPropietario
 
 urlpatterns = [
@@ -43,11 +44,8 @@ urlpatterns = [
     path('ingresarPropietario/',ingresarPropietario,name='ingresarPropietario'),
     path('cargarPropietarioEditar/<int:propietario_id>/',cargarPropietarioEditar,name='cargarPropietarioEditar'),
 
-    # aqui van para el crud de propietarios
-    # path('vistaPropietario/',vistaPropietario,name='vistaPropietario'),
-    # path('agregarPropietario/',agregarPropietario,name='agregarPropietario'),
-    # path('obtenerUnPropietario/<int:propietario_id>/',obtenerUnPropietario,name='obtenerUnPropietario'),
-    # path('editarUnPropietario/<int:propietario_id>/',editarUnPropietario,name='editarUnPropietario'),
-    # path('eliminarUnPropietario/<int:propietario_id>/',eliminarUnPropietario,name='eliminarUnPropietario'),
+    # aqui van para el crud de historial
+    path('vistaHistorial/', vistaHistorial, name='vistaHistorial'),
+    path('agregarHistorial/', agregarHistorial, name='agregarHistorial'),
 
 ]

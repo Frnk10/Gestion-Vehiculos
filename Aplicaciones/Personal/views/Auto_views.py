@@ -19,7 +19,7 @@ def ingresarAuto(request):
         fkid_mod = int(fkid_mod)
         # Obtener la instancia del modelo relacionado
         modelo = Modelo.objects.get(pk=fkid_mod)
-        # Crear el propietario
+        # Crear el auto
         auto = Carro.objects.create(
             color_car=color_car,
             precio_car=precio_car,

@@ -50,7 +50,12 @@ function registrarUsuario() {
 
     // Si hay campos vacíos, no envíes el formulario
     if (!allFieldsValid) {
-        alert("Todos los campos son obligatorios."); // Mensaje de error
+        iziToast.info({
+            title: "AVISO",
+            message: "Algunos campos son necesarios", // Mensaje de error
+            position: "topCenter", // Opcional: puedes ajustar la posición
+            timeout: 3000 // Opcional: duración de la notificación en milisegundos
+        })
         return; // Detener la ejecución de la función
     }
 
@@ -70,6 +75,17 @@ function registrarUsuario() {
             });
         }
         return response.json(); 
+    })
+    .then(data => {       
+        if (data.estado) {
+            iziToast.success({
+                title:"CONFIRMACIÓN",
+                message:data.mensaje,
+                position: "topCenter", // Opcional: puedes ajustar la posición
+                timeout: 2000 // Opcional: duración de la notificación en milisegundos
+            });
+           
+        }
     })
     .catch(error => {
         console.error('Error al registrar el usuario:', error);

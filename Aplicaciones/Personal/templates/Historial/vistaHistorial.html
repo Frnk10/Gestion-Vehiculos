@@ -1,0 +1,147 @@
+{% comment %} tabla de empresa {% endcomment %}
+<div class="container">
+    <!-- Tabla de historiales -->
+    <hr>
+    <h3 class="mt-4 text-center">Historiales Existentes</h3>
+    <div class="row">
+        <div class="col-6">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarHistorial">
+                Agregar Nuevo
+            </button>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table" id="tbl-historial">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>PROPIETARIO</th>
+                    <th>CIUDAD</th>
+                    <th>AUTO</th>
+                    <th>PLACA</th>
+                    <th>COLOR</th>
+                    <th>PRECIO</th>
+                    <th>ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+            {%for historial in historiales%}
+                <tr>
+                    <td style="width: 200px;">
+                        <p class="text-small small">{{ historial.id }}</p>
+                    </td>
+                    <td style=" width: 200px;"><p class="text-small small">{{ historial.fkid_pro.nombre_pro }} {{ historial.fkid_pro.apellido_pro }}</p></td>
+                    <td style=" width: 100px;"><p class="text-small small">{{ historial.fkid_pro.fkid_ciu.nombre_ciu }}</p></td>
+                    <td style=" width: 100px;"><p class="text-small small">{{ historial.fkid_car.fkid_mod.nombre_mod }}</p></td>
+                    <td style=" width: 100px;"><p class="text-small small">{{ historial.fkid_car.placa_car}}</p></td>
+                    <td style=" width: 100px;"><p class="text-small small">{{ historial.fkid_car.color_car }}</p></td>
+                    <td style=" width: 100px;"><p class="text-small small">{{ historial.fkid_car.precio_car }}</p></td>
+                    <td style="width: 50px;">
+                        <div class="row btn-acciones">
+                            <div class="col-md-6"><button type="button" class="btn btn-warning rounded" onclick="editarHistorial({{historial.id}});"><i class="fas fa-pen"></i></button></div>
+
+                            <div class="col-md-6"><button type="button" class=" btn btn-danger rounded" onclick="eliminarHistorial({{historial.id}})"><i class="fas fa-trash"></i></button></div>
+                        </div>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="8">No hay historiales registrados.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- Modal para agregar modelo -->
+<div class="modal fade" id="modalAgregarHistorial" tabindex="-1" aria-labelledby="modalAgregarHistorialLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAgregarHistorialLabel">Agregar Historial</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% csrf_token %}
+                <form id="formAgregarHistorial" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group"> 
+                                <label ><strong>PROPIETARIOS:</strong></label>
+                                <select class="form-select" id="fkid_pro" name="fkid_pro" required>
+                                    <option value="" selected disabled>Seleccione un propietario</option>
+                                    {% for propietario in propietarios %}
+                                        <option value="{{ propietario.id }}">{{ propietario.nombre_pro }} {{ propietario.apellido_pro }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>                     
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label ><strong>AUTOS:</strong></label>
+                                <select class="form-select" id="fkid_car" name="fkid_car" required>
+                                    <option value="" selected disabled>Seleccione un auto</option>
+                                    {% for auto in autos %}
+                                        <option value="{{ auto.id }}">{{ auto.fkid_mod.nombre_mod }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>              
+                    <br>
+                    <div class="row">
+                        <button type="button" class="btn btn-success" onclick="agregarHistorial();">Agregar Historial</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para seleccionar y visualizar historial -->
+<div class="modal fade" id="modalVerHistorial" tabindex="-1" aria-labelledby="modalVerHistorialLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalVerHistorialLabel">Auto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% csrf_token %}
+                <form id="formEditarAuto" enctype="multipart/form-data">
+                    <input type="hidden" id="verId" name="id">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group"> 
+                                <label ><strong>PROPIETARIOS:</strong></label>
+                                <select class="form-select" id="fkid_mod" name="fkid_mod" required>
+                                    <option value="" selected disabled>Seleccione un propietario</option>
+                                    {% for propetario in propetarios %}
+                                        <option value="{{ propetario.id }}">{{ propetario.nombre_pro }} {{ propetario.apellido_pro }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>                     
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label ><strong>AUTOS:</strong></label>
+                                <select class="form-select" id="fkid_mod" name="fkid_mod" required>
+                                    <option value="" selected disabled>Seleccione un auto</option>
+                                    {% for auto in autos %}
+                                        <option value="{{ auto.id }}">{{ auto.fkid_mod.nombre_mod }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div> 
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="actualizarHistorial();">Editar</button>
+            </div>
+        </div>
+    </div>
+</div>
