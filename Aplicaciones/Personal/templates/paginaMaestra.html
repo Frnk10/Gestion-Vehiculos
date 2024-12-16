@@ -50,7 +50,8 @@
     <link rel="stylesheet" href="{% static 'plantilla/css/bootstrap.min.css' %}" />
 
     <!-- IZITOAST CSS -->
-    <link rel="stylesheet" href="{% static 'plantilla/css/iziToast.min.css' %}" />
+    <link href=" https://cdn.jsdelivr.net/npm/izitoast@1.4.0/dist/css/iziToast.min.css " rel="stylesheet">
+    {% comment %} <link rel="stylesheet" href="{% static 'plantilla/css/iziToast.min.css' %}" /> {% endcomment %}
 
 </head>
 <body>
@@ -126,7 +127,8 @@
     <!-- <script src="{% static 'plantilla/js/plugin/sweetalert/sweetalert.js' %}"></script> -->
 
     <!-- IZITOAST JS -->
-    <script src="{% static 'plantilla/js/plugin/iziToast/iziToast.min.js' %}"></script>
+    <script src=" https://cdn.jsdelivr.net/npm/izitoast@1.4.0/dist/js/iziToast.min.js "></script>
+    {% comment %} <script src="{% static 'plantilla/js/plugin/iziToast/iziToast.min.js' %}"></script> {% endcomment %}
 
     <!-- MOSTRAR MENSAJES -->
     {% if messages %}

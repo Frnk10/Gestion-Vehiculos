@@ -5,8 +5,8 @@ from django.views.decorators.csrf import csrf_exempt
 from ..models import Modelo,Carro
 
 def vistaAuto(request):
-    autosbdd = Carro.objects.all()
-    modelos = Modelo.objects.all()  # Obtener todas los modelos
+    autosbdd = Carro.objects.all().order_by('-id')
+    modelos = Modelo.objects.all().order_by('-id')  # Obtener todas los modelos
     return render(request, "Auto/vistaAuto.html", {'autos': autosbdd, 'modelos': modelos})
 
 def ingresarAuto(request):

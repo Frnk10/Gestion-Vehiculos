@@ -6,8 +6,8 @@ from ..models import Ciudad, Propietario
 from django.views.decorators.csrf import csrf_protect
 
 def vistaPropietario(request):
-    propietariosbdd = Propietario.objects.all()
-    ciudades = Ciudad.objects.all()  # Obtener todas las ciudades
+    propietariosbdd = Propietario.objects.all().order_by('-id')
+    ciudades = Ciudad.objects.all().order_by('-id') # Obtener todas las ciudades
     return render(request, "Propietario/vistaPropietario.html", {'propietarios': propietariosbdd, 'ciudades': ciudades})
 
 def ingresarPropietario(request):
@@ -43,7 +43,7 @@ def cargarPropietarioEditar(request, propietario_id):
         'apellido_pro': propietario.apellido_pro,
         'email_pro': propietario.email_pro,
         'telefono_pro': propietario.telefono_pro,
-        'fkid_ciu': propietario.fkid_ciu.id,  # Asumiendo que 'fkid_ciu' es una relación con el modelo Ciudad
+        'fkid_ciu': propietario.fkid_ciu.id,  
     })
 
 

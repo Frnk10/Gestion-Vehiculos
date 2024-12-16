@@ -183,6 +183,8 @@ function editarPropietario() {
     })
         .then(response => response.json())
         .then(data => {
+
+            
             if (data.success) {
                 alert(data.message);
                 
@@ -190,7 +192,6 @@ function editarPropietario() {
                 if(modalPropietario){
                     modalPropietario.hide();
                 }
-
                 vistaPropietario();
             } else {
                 alert(`Error: ${data.message}`);
@@ -215,15 +216,7 @@ function eliminarPropietario(id){
     .then(response=>response.json())
     .then(data=>{
         
-            iziToast.warning({
-                title: "ELIMINACIÓN",
-                message: "Propietario eliminado correctamente",
-                position: "topLeft", 
-                timeout: 3000 
-            })
-        
-        vistaPropietario();
-        
+        vistaPropietario();   
         
     })
     .catch(error=>{
