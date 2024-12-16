@@ -216,9 +216,7 @@ function eliminarPropietario(id){
     .then(response=>response.json())
     .then(data=>{
         
-        
-        vistaPropietario();
-        
+        vistaPropietario();   
         
     })
     .catch(error=>{

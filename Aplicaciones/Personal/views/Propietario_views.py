@@ -43,7 +43,7 @@ def cargarPropietarioEditar(request, propietario_id):
         'apellido_pro': propietario.apellido_pro,
         'email_pro': propietario.email_pro,
         'telefono_pro': propietario.telefono_pro,
-        'fkid_ciu': propietario.fkid_ciu.id,  # Asumiendo que 'fkid_ciu' es una relación con el modelo Ciudad
+        'fkid_ciu': propietario.fkid_ciu.id,  
     })
 
 
