@@ -101,10 +101,10 @@ WSGI_APPLICATION = 'EmpresaMaster.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'carrodb',  # Nombre de tu base de datos
+        'NAME': 'autodb',  # Nombre de tu base de datos
         'USER': 'postgres',           # Usuario de PostgreSQL
         'PASSWORD': '123456',    # Contraseña de tu usuario
-        'HOST': 'localhost',         # Dirección del servidor (o IP)
+        'HOST': '127.0.0.1',         # Dirección del servidor (o IP)
         'PORT': '5432',              # Puerto (5432 es el predeterminado)
     }
 }
