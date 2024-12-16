@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from ..models import Ciudad
 
 def vistaCiudad (request):
-    ciudadesbdd=Ciudad.objects.all()
+    ciudadesbdd=Ciudad.objects.all().order_by('-id')
     return render(request,"Ciudad/vistaCiudad.html",{'ciudades':ciudadesbdd})
 
 def ingresarCiudad(request):

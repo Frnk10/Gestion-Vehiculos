@@ -6,9 +6,9 @@ from django.views.decorators.csrf import csrf_exempt
 from ..models import Propietario,Carro,Historial
 
 def vistaHistorial(request):
-    historial = Historial.objects.all()
-    propetario = Propietario.objects.all()
-    auto = Carro.objects.all()
+    historial = Historial.objects.all().order_by('-id')
+    propetario = Propietario.objects.all().order_by('-id')
+    auto = Carro.objects.all().order_by('-id')
     contexto = {
         'historiales': historial,
         'propietarios': propetario,

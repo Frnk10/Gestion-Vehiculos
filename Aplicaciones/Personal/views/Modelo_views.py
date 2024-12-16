@@ -6,7 +6,7 @@ from ..models import Modelo
 
 # Vista para listar las empresas
 def vistaModelo(request):
-    modelos = Modelo.objects.all()  # Elimina la coma para obtener un QuerySet
+    modelos = Modelo.objects.all().order_by('-id')  # Elimina la coma para obtener un QuerySet
     context = {
         'modelos': modelos,
     }
