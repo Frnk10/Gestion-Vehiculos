@@ -13,7 +13,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 import locale #  Para la fecha
+import sys
+import io
 locale.setlocale(locale.LC_TIME, '') #  Para la fecha en español
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -77,23 +80,34 @@ WSGI_APPLICATION = 'EmpresaMaster.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'carrodb.db',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': 'carrodb.db',
+#     }
+# }
 
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
+#         'ENGINE': 'django.db.backends.mysql',
 #         'NAME': 'carrodb',  # Nombre de tu base de datos
-#         'USER': 'postgres',           # Usuario de PostgreSQL
-#         'PASSWORD': 'UTC',    # Contraseña de tu usuario
-#         'HOST': '127.0.0.1',         # Dirección del servidor (o IP)
-#         'PORT': '5432',              # Puerto (5432 es el predeterminado)
+#         'USER': 'root',           # Usuario de Mysql
+#         'PASSWORD': '',    # Contraseña de tu usuario
+#         'HOST': 'localhost',         # Dirección del servidor (o IP)
+#         'PORT': '3306',              # Puerto (3306 es el predeterminado)
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'carrodb',  # Nombre de tu base de datos
+        'USER': 'postgres',           # Usuario de PostgreSQL
+        'PASSWORD': '123456',    # Contraseña de tu usuario
+        'HOST': 'localhost',         # Dirección del servidor (o IP)
+        'PORT': '5432',              # Puerto (5432 es el predeterminado)
+    }
+}
 
 
 # Password validation
